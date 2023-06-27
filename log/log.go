@@ -21,11 +21,7 @@ var defaultLevel zap.AtomicLevel
 type Level = zapcore.Level
 
 func init() {
-	cfg := &Config{
-		Level:  "debug",
-		Encode: "console",
-		Output: "console",
-	}
+	cfg := NewDefaultConfig()
 	DefaultLog = newZap(cfg)
 }
 

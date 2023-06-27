@@ -8,3 +8,11 @@ type Config struct {
 	Output       string                 `json:"output" default:"console"`
 	InitFields   map[string]interface{} `json:"initFields"`
 }
+
+func NewDefaultConfig() *Config {
+	return &Config{
+		Level:  "debug",
+		Encode: "console",
+		Output: "console",
+	}
+}
