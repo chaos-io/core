@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package core;
+
+import "core/null.proto";
+
+option go_package = "github.com/chaos-io/core/go/core;core";
+
+enum ValueKind {
+  VALUE_KIND_UNSPECIFIED = 0;
+  VALUE_KIND_NULL = 1;
+  VALUE_KIND_BOOLEAN = 2;
+  VALUE_KIND_INTEGER = 3;
+  VALUE_KIND_NUMBER = 4;
+  VALUE_KIND_STRING = 5;
+  VALUE_KIND_BYTES = 6;
+  VALUE_KIND_ARRAY = 7;
+  VALUE_KIND_OBJECT = 8;
+}
+
+message Object {
+  map<string, Value> fields = 1;
+}
+
+message Values {
+  repeated Value values = 1;
+}
+
+message Value {
+  oneof kind {
+    Null null_value = 1;
+    bool bool_value = 2;
+    uint64 positive_value = 3;
+    uint64 negative_value = 4;
+    double number_value = 5;
+    string string_value = 7;
+    bytes bytes_value = 8;
+    Object object_value = 10;
+    Values values_value = 11;
+  }
+}

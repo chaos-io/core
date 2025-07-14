@@ -9,8 +9,19 @@
 - [core/error.proto](#core_error-proto)
     - [Error](#core-Error)
   
+- [core/null.proto](#core_null-proto)
+    - [Null](#core-Null)
+  
 - [core/resource.proto](#core_resource-proto)
     - [Resource](#core-Resource)
+  
+- [core/value.proto](#core_value-proto)
+    - [Object](#core-Object)
+    - [Object.FieldsEntry](#core-Object-FieldsEntry)
+    - [Value](#core-Value)
+    - [Values](#core-Values)
+  
+    - [ValueKind](#core-ValueKind)
   
 - [Scalar Value Types](#scalar-value-types)
 
@@ -83,6 +94,32 @@
 
 
 
+<a name="core_null-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## core/null.proto
+
+
+
+<a name="core-Null"></a>
+
+### Null
+
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
 <a name="core_resource-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
@@ -106,6 +143,110 @@
 
 
  
+
+ 
+
+ 
+
+ 
+
+
+
+<a name="core_value-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## core/value.proto
+
+
+
+<a name="core-Object"></a>
+
+### Object
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| fields | [Object.FieldsEntry](#core-Object-FieldsEntry) | repeated |  |
+
+
+
+
+
+
+<a name="core-Object-FieldsEntry"></a>
+
+### Object.FieldsEntry
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| key | [string](#string) |  |  |
+| value | [Value](#core-Value) |  |  |
+
+
+
+
+
+
+<a name="core-Value"></a>
+
+### Value
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| null_value | [Null](#core-Null) |  |  |
+| bool_value | [bool](#bool) |  |  |
+| positive_value | [uint64](#uint64) |  |  |
+| negative_value | [uint64](#uint64) |  |  |
+| number_value | [double](#double) |  |  |
+| string_value | [string](#string) |  |  |
+| bytes_value | [bytes](#bytes) |  |  |
+| object_value | [Object](#core-Object) |  |  |
+| values_value | [Values](#core-Values) |  |  |
+
+
+
+
+
+
+<a name="core-Values"></a>
+
+### Values
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| values | [Value](#core-Value) | repeated |  |
+
+
+
+
+
+ 
+
+
+<a name="core-ValueKind"></a>
+
+### ValueKind
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| VALUE_KIND_UNSPECIFIED | 0 |  |
+| VALUE_KIND_NULL | 1 |  |
+| VALUE_KIND_BOOLEAN | 2 |  |
+| VALUE_KIND_INTEGER | 3 |  |
+| VALUE_KIND_NUMBER | 4 |  |
+| VALUE_KIND_STRING | 5 |  |
+| VALUE_KIND_BYTES | 6 |  |
+| VALUE_KIND_ARRAY | 7 |  |
+| VALUE_KIND_OBJECT | 8 |  |
+
 
  
 

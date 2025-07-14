@@ -205,6 +205,21 @@
         
           
           <li>
+            <a href="#core%2fnull.proto">core/null.proto</a>
+            <ul>
+              
+                <li>
+                  <a href="#core.Null"><span class="badge">M</span>Null</a>
+                </li>
+              
+              
+              
+              
+            </ul>
+          </li>
+        
+          
+          <li>
             <a href="#core%2fresource.proto">core/resource.proto</a>
             <ul>
               
@@ -212,6 +227,37 @@
                   <a href="#core.Resource"><span class="badge">M</span>Resource</a>
                 </li>
               
+              
+              
+              
+            </ul>
+          </li>
+        
+          
+          <li>
+            <a href="#core%2fvalue.proto">core/value.proto</a>
+            <ul>
+              
+                <li>
+                  <a href="#core.Object"><span class="badge">M</span>Object</a>
+                </li>
+              
+                <li>
+                  <a href="#core.Object.FieldsEntry"><span class="badge">M</span>Object.FieldsEntry</a>
+                </li>
+              
+                <li>
+                  <a href="#core.Value"><span class="badge">M</span>Value</a>
+                </li>
+              
+                <li>
+                  <a href="#core.Values"><span class="badge">M</span>Values</a>
+                </li>
+              
+              
+                <li>
+                  <a href="#core.ValueKind"><span class="badge">E</span>ValueKind</a>
+                </li>
               
               
               
@@ -336,6 +382,27 @@
     
       
       <div class="file-heading">
+        <h2 id="core/null.proto">core/null.proto</h2><a href="#title">Top</a>
+      </div>
+      <p></p>
+
+      
+        <h3 id="core.Null">Null</h3>
+        <p></p>
+
+        
+
+        
+      
+
+      
+
+      
+
+      
+    
+      
+      <div class="file-heading">
         <h2 id="core/resource.proto">core/resource.proto</h2><a href="#title">Top</a>
       </div>
       <p></p>
@@ -373,6 +440,244 @@
         
       
 
+      
+
+      
+
+      
+    
+      
+      <div class="file-heading">
+        <h2 id="core/value.proto">core/value.proto</h2><a href="#title">Top</a>
+      </div>
+      <p></p>
+
+      
+        <h3 id="core.Object">Object</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>fields</td>
+                  <td><a href="#core.Object.FieldsEntry">Object.FieldsEntry</a></td>
+                  <td>repeated</td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="core.Object.FieldsEntry">Object.FieldsEntry</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>key</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>value</td>
+                  <td><a href="#core.Value">Value</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="core.Value">Value</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>null_value</td>
+                  <td><a href="#core.Null">Null</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>bool_value</td>
+                  <td><a href="#bool">bool</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>positive_value</td>
+                  <td><a href="#uint64">uint64</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>negative_value</td>
+                  <td><a href="#uint64">uint64</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>number_value</td>
+                  <td><a href="#double">double</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>string_value</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>bytes_value</td>
+                  <td><a href="#bytes">bytes</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>object_value</td>
+                  <td><a href="#core.Object">Object</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>values_value</td>
+                  <td><a href="#core.Values">Values</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="core.Values">Values</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>values</td>
+                  <td><a href="#core.Value">Value</a></td>
+                  <td>repeated</td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+
+      
+        <h3 id="core.ValueKind">ValueKind</h3>
+        <p></p>
+        <table class="enum-table">
+          <thead>
+            <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td>VALUE_KIND_UNSPECIFIED</td>
+                <td>0</td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>VALUE_KIND_NULL</td>
+                <td>1</td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>VALUE_KIND_BOOLEAN</td>
+                <td>2</td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>VALUE_KIND_INTEGER</td>
+                <td>3</td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>VALUE_KIND_NUMBER</td>
+                <td>4</td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>VALUE_KIND_STRING</td>
+                <td>5</td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>VALUE_KIND_BYTES</td>
+                <td>6</td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>VALUE_KIND_ARRAY</td>
+                <td>7</td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>VALUE_KIND_OBJECT</td>
+                <td>8</td>
+                <td><p></p></td>
+              </tr>
+            
+          </tbody>
+        </table>
       
 
       
