@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package core;
+
+import "core/error_code.proto";
+import "google/protobuf/struct.proto";
+
+option go_package = "github.com/chaos-io/core/go/core;core";
+
+message Error {
+  ErrorCode code = 1;
+  string message = 2;
+  google.protobuf.ListValue details = 3;
+}

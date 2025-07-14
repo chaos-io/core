@@ -3,10 +3,83 @@
 
 ## Table of Contents
 
+- [core/error_code.proto](#core_error_code-proto)
+    - [ErrorCode](#core-ErrorCode)
+  
+- [core/error.proto](#core_error-proto)
+    - [Error](#core-Error)
+  
 - [core/resource.proto](#core_resource-proto)
     - [Resource](#core-Resource)
   
 - [Scalar Value Types](#scalar-value-types)
+
+
+
+<a name="core_error_code-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## core/error_code.proto
+
+
+
+<a name="core-ErrorCode"></a>
+
+### ErrorCode
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| code | [int32](#int32) |  |  |
+| name | [string](#string) |  |  |
+| description | [string](#string) |  |  |
+| http_status_code | [int32](#int32) |  |  |
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+<a name="core_error-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## core/error.proto
+
+
+
+<a name="core-Error"></a>
+
+### Error
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| code | [ErrorCode](#core-ErrorCode) |  |  |
+| message | [string](#string) |  |  |
+| details | [google.protobuf.ListValue](#google-protobuf-ListValue) |  |  |
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+ 
 
 
 
