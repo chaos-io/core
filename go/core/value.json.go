@@ -39,7 +39,7 @@ func (codec *ValueCodec) DecodeAny(a jsoniter.Any) (*Value, error) {
 		} else if floatVal != float64(intVal) {
 			return NewFloat64Value(floatVal), nil
 		} else {
-			return NewInt64Value(int64(intVal)), nil
+			return NewInt64Value(intVal), nil
 		}
 	case jsoniter.StringValue:
 		str := a.ToString()

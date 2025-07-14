@@ -250,8 +250,8 @@ func (x *Value) GetInt32() int32 {
 
 func (x *Value) GetInt64() int64 {
 	if negative := x.GetNegativeValue(); negative > 0 {
-		if negative == uint64(math.MaxUint64)+1 {
-			return math.MaxInt64
+		if negative == uint64(1)<<63 {
+			return math.MinInt64
 		}
 		return -int64(negative)
 	}
