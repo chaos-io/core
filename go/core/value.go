@@ -19,14 +19,14 @@ const ValueTypeFullName = "core.Value"
 //	╠═══════════════════════════════════════╪════════════════════════════════════════════╣
 //	║ nil                                   │ stored as NullValue                        ║
 //	║ bool                                  │ stored as BoolValue                        ║
-//	║ int, int8, int16, int32, int64        │ stored as NumberValue                      ║
-//	║ uint, uint8, uint16, uint32, uint64   │ stored as NumberValue                      ║
+//	║ int, int8, int16, int32, int64        │ stored as NegativeVal/PositiveVal          ║
+//	║ uint, uint8, uint16, uint32, uint64   │ stored as NegativeVal/PositiveVal          ║
 //	║ float32, float64                      │ stored as NumberValue                      ║
 //	║ json.Number                           │ stored as NumberValue                      ║
 //	║ string                                │ stored as StringValue; must be valid UTF-8 ║
 //	║ []byte                                │ stored as StringValue; base64-encoded      ║
-//	║ map[string]any                        │ stored as StructValue                      ║
-//	║ []any                                 │ stored as ListValue                        ║
+//	║ map[string]any                        │ stored as ObjectValue                      ║
+//	║ []any                                 │ stored as ValuesValue                      ║
 //	╚═══════════════════════════════════════╧════════════════════════════════════════════╝
 //
 // When converting an int64 or uint64 to a NumberValue, numeric precision loss
@@ -38,29 +38,29 @@ func NewValue(v any) (*Value, error) {
 	case bool:
 		return NewBoolValue(v), nil
 	case int:
-		return NewNumberValue(float64(v)), nil
+		return NewIntValue(v), nil
 	case int8:
-		return NewNumberValue(float64(v)), nil
+		return NewInt8Value(v), nil
 	case int16:
-		return NewNumberValue(float64(v)), nil
+		return NewInt16Value(v), nil
 	case int32:
-		return NewNumberValue(float64(v)), nil
+		return NewInt32Value(v), nil
 	case int64:
-		return NewNumberValue(float64(v)), nil
+		return NewInt64Value(v), nil
 	case uint:
-		return NewNumberValue(float64(v)), nil
+		return NewUintValue(v), nil
 	case uint8:
-		return NewNumberValue(float64(v)), nil
+		return NewUint8Value(v), nil
 	case uint16:
-		return NewNumberValue(float64(v)), nil
+		return NewUint16Value(v), nil
 	case uint32:
-		return NewNumberValue(float64(v)), nil
+		return NewUint32Value(v), nil
 	case uint64:
-		return NewNumberValue(float64(v)), nil
+		return NewUint64Value(v), nil
 	case float32:
-		return NewNumberValue(float64(v)), nil
+		return NewFloat32Value(v), nil
 	case float64:
-		return NewNumberValue(v), nil
+		return NewFloat64Value(v), nil
 	case json.Number:
 		n, err := v.Float64()
 		if err != nil {
