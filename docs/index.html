@@ -190,41 +190,11 @@
         
           
           <li>
-            <a href="#core%2ferror.proto">core/error.proto</a>
-            <ul>
-              
-                <li>
-                  <a href="#core.Error"><span class="badge">M</span>Error</a>
-                </li>
-              
-              
-              
-              
-            </ul>
-          </li>
-        
-          
-          <li>
             <a href="#core%2fnull.proto">core/null.proto</a>
             <ul>
               
                 <li>
                   <a href="#core.Null"><span class="badge">M</span>Null</a>
-                </li>
-              
-              
-              
-              
-            </ul>
-          </li>
-        
-          
-          <li>
-            <a href="#core%2fresource.proto">core/resource.proto</a>
-            <ul>
-              
-                <li>
-                  <a href="#core.Resource"><span class="badge">M</span>Resource</a>
                 </li>
               
               
@@ -258,6 +228,36 @@
                 <li>
                   <a href="#core.ValueKind"><span class="badge">E</span>ValueKind</a>
                 </li>
+              
+              
+              
+            </ul>
+          </li>
+        
+          
+          <li>
+            <a href="#core%2ferror.proto">core/error.proto</a>
+            <ul>
+              
+                <li>
+                  <a href="#core.Error"><span class="badge">M</span>Error</a>
+                </li>
+              
+              
+              
+              
+            </ul>
+          </li>
+        
+          
+          <li>
+            <a href="#core%2fresource.proto">core/resource.proto</a>
+            <ul>
+              
+                <li>
+                  <a href="#core.Resource"><span class="badge">M</span>Resource</a>
+                </li>
+              
               
               
               
@@ -330,58 +330,6 @@
     
       
       <div class="file-heading">
-        <h2 id="core/error.proto">core/error.proto</h2><a href="#title">Top</a>
-      </div>
-      <p></p>
-
-      
-        <h3 id="core.Error">Error</h3>
-        <p></p>
-
-        
-          <table class="field-table">
-            <thead>
-              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>code</td>
-                  <td><a href="#core.ErrorCode">ErrorCode</a></td>
-                  <td></td>
-                  <td><p> </p></td>
-                </tr>
-              
-                <tr>
-                  <td>message</td>
-                  <td><a href="#string">string</a></td>
-                  <td></td>
-                  <td><p> </p></td>
-                </tr>
-              
-                <tr>
-                  <td>details</td>
-                  <td><a href="#google.protobuf.ListValue">google.protobuf.ListValue</a></td>
-                  <td></td>
-                  <td><p> </p></td>
-                </tr>
-              
-            </tbody>
-          </table>
-
-          
-
-        
-      
-
-      
-
-      
-
-      
-    
-      
-      <div class="file-heading">
         <h2 id="core/null.proto">core/null.proto</h2><a href="#title">Top</a>
       </div>
       <p></p>
@@ -391,51 +339,6 @@
         <p></p>
 
         
-
-        
-      
-
-      
-
-      
-
-      
-    
-      
-      <div class="file-heading">
-        <h2 id="core/resource.proto">core/resource.proto</h2><a href="#title">Top</a>
-      </div>
-      <p></p>
-
-      
-        <h3 id="core.Resource">Resource</h3>
-        <p></p>
-
-        
-          <table class="field-table">
-            <thead>
-              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>id</td>
-                  <td><a href="#string">string</a></td>
-                  <td></td>
-                  <td><p> </p></td>
-                </tr>
-              
-                <tr>
-                  <td>name</td>
-                  <td><a href="#string">string</a></td>
-                  <td></td>
-                  <td><p> </p></td>
-                </tr>
-              
-            </tbody>
-          </table>
-
-          
 
         
       
@@ -678,6 +581,103 @@
             
           </tbody>
         </table>
+      
+
+      
+
+      
+    
+      
+      <div class="file-heading">
+        <h2 id="core/error.proto">core/error.proto</h2><a href="#title">Top</a>
+      </div>
+      <p></p>
+
+      
+        <h3 id="core.Error">Error</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>code</td>
+                  <td><a href="#core.ErrorCode">ErrorCode</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>message</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>details</td>
+                  <td><a href="#core.Value">Value</a></td>
+                  <td>repeated</td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+
+      
+
+      
+
+      
+    
+      
+      <div class="file-heading">
+        <h2 id="core/resource.proto">core/resource.proto</h2><a href="#title">Top</a>
+      </div>
+      <p></p>
+
+      
+        <h3 id="core.Resource">Resource</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>name</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+
       
 
       

@@ -6,14 +6,8 @@
 - [core/error_code.proto](#core_error_code-proto)
     - [ErrorCode](#core-ErrorCode)
   
-- [core/error.proto](#core_error-proto)
-    - [Error](#core-Error)
-  
 - [core/null.proto](#core_null-proto)
     - [Null](#core-Null)
-  
-- [core/resource.proto](#core_resource-proto)
-    - [Resource](#core-Resource)
   
 - [core/value.proto](#core_value-proto)
     - [Object](#core-Object)
@@ -22,6 +16,12 @@
     - [Values](#core-Values)
   
     - [ValueKind](#core-ValueKind)
+  
+- [core/error.proto](#core_error-proto)
+    - [Error](#core-Error)
+  
+- [core/resource.proto](#core_resource-proto)
+    - [Resource](#core-Resource)
   
 - [Scalar Value Types](#scalar-value-types)
 
@@ -61,39 +61,6 @@
 
 
 
-<a name="core_error-proto"></a>
-<p align="right"><a href="#top">Top</a></p>
-
-## core/error.proto
-
-
-
-<a name="core-Error"></a>
-
-### Error
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| code | [ErrorCode](#core-ErrorCode) |  |  |
-| message | [string](#string) |  |  |
-| details | [google.protobuf.ListValue](#google-protobuf-ListValue) |  |  |
-
-
-
-
-
- 
-
- 
-
- 
-
- 
-
-
-
 <a name="core_null-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
@@ -105,38 +72,6 @@
 
 ### Null
 
-
-
-
-
-
- 
-
- 
-
- 
-
- 
-
-
-
-<a name="core_resource-proto"></a>
-<p align="right"><a href="#top">Top</a></p>
-
-## core/resource.proto
-
-
-
-<a name="core-Resource"></a>
-
-### Resource
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| id | [string](#string) |  |  |
-| name | [string](#string) |  |  |
 
 
 
@@ -247,6 +182,71 @@
 | VALUE_KIND_ARRAY | 7 |  |
 | VALUE_KIND_OBJECT | 8 |  |
 
+
+ 
+
+ 
+
+ 
+
+
+
+<a name="core_error-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## core/error.proto
+
+
+
+<a name="core-Error"></a>
+
+### Error
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| code | [ErrorCode](#core-ErrorCode) |  |  |
+| message | [string](#string) |  |  |
+| details | [Value](#core-Value) | repeated |  |
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+<a name="core_resource-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## core/resource.proto
+
+
+
+<a name="core-Resource"></a>
+
+### Resource
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [string](#string) |  |  |
+| name | [string](#string) |  |  |
+
+
+
+
+
+ 
 
  
 
