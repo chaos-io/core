@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package core;
+package chaos_io.core;
 
-import "core/error_code.proto";
-import "core/value.proto";
+import "chaos-io/core/error_code.proto";
+import "chaos-io/core/value.proto";
 
 option go_package = "github.com/chaos-io/core/go/core;core";
 

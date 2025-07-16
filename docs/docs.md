@@ -3,38 +3,38 @@
 
 ## Table of Contents
 
-- [core/error_code.proto](#core_error_code-proto)
-    - [ErrorCode](#core-ErrorCode)
+- [chaos-io/core/error_code.proto](#chaos-io_core_error_code-proto)
+    - [ErrorCode](#chaos_io-core-ErrorCode)
   
-- [core/null.proto](#core_null-proto)
-    - [Null](#core-Null)
+- [chaos-io/core/null.proto](#chaos-io_core_null-proto)
+    - [Null](#chaos_io-core-Null)
   
-- [core/value.proto](#core_value-proto)
-    - [Object](#core-Object)
-    - [Object.FieldsEntry](#core-Object-FieldsEntry)
-    - [Value](#core-Value)
-    - [Values](#core-Values)
+- [chaos-io/core/value.proto](#chaos-io_core_value-proto)
+    - [Object](#chaos_io-core-Object)
+    - [Object.FieldsEntry](#chaos_io-core-Object-FieldsEntry)
+    - [Value](#chaos_io-core-Value)
+    - [Values](#chaos_io-core-Values)
   
-    - [ValueKind](#core-ValueKind)
+    - [ValueKind](#chaos_io-core-ValueKind)
   
-- [core/error.proto](#core_error-proto)
-    - [Error](#core-Error)
+- [chaos-io/core/error.proto](#chaos-io_core_error-proto)
+    - [Error](#chaos_io-core-Error)
   
-- [core/resource.proto](#core_resource-proto)
-    - [Resource](#core-Resource)
+- [chaos-io/core/resource.proto](#chaos-io_core_resource-proto)
+    - [Resource](#chaos_io-core-Resource)
   
 - [Scalar Value Types](#scalar-value-types)
 
 
 
-<a name="core_error_code-proto"></a>
+<a name="chaos-io_core_error_code-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## core/error_code.proto
+## chaos-io/core/error_code.proto
 
 
 
-<a name="core-ErrorCode"></a>
+<a name="chaos_io-core-ErrorCode"></a>
 
 ### ErrorCode
 
@@ -61,14 +61,14 @@
 
 
 
-<a name="core_null-proto"></a>
+<a name="chaos-io_core_null-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## core/null.proto
+## chaos-io/core/null.proto
 
 
 
-<a name="core-Null"></a>
+<a name="chaos_io-core-Null"></a>
 
 ### Null
 
@@ -87,14 +87,14 @@
 
 
 
-<a name="core_value-proto"></a>
+<a name="chaos-io_core_value-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## core/value.proto
+## chaos-io/core/value.proto
 
 
 
-<a name="core-Object"></a>
+<a name="chaos_io-core-Object"></a>
 
 ### Object
 
@@ -102,14 +102,14 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| fields | [Object.FieldsEntry](#core-Object-FieldsEntry) | repeated |  |
+| fields | [Object.FieldsEntry](#chaos_io-core-Object-FieldsEntry) | repeated |  |
 
 
 
 
 
 
-<a name="core-Object-FieldsEntry"></a>
+<a name="chaos_io-core-Object-FieldsEntry"></a>
 
 ### Object.FieldsEntry
 
@@ -118,14 +118,14 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | key | [string](#string) |  |  |
-| value | [Value](#core-Value) |  |  |
+| value | [Value](#chaos_io-core-Value) |  |  |
 
 
 
 
 
 
-<a name="core-Value"></a>
+<a name="chaos_io-core-Value"></a>
 
 ### Value
 
@@ -133,22 +133,22 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| null_value | [Null](#core-Null) |  |  |
+| null_value | [Null](#chaos_io-core-Null) |  |  |
 | bool_value | [bool](#bool) |  |  |
 | positive_value | [uint64](#uint64) |  |  |
 | negative_value | [uint64](#uint64) |  |  |
 | number_value | [double](#double) |  |  |
 | string_value | [string](#string) |  |  |
 | bytes_value | [bytes](#bytes) |  |  |
-| object_value | [Object](#core-Object) |  |  |
-| values_value | [Values](#core-Values) |  |  |
+| object_value | [Object](#chaos_io-core-Object) |  |  |
+| values_value | [Values](#chaos_io-core-Values) |  |  |
 
 
 
 
 
 
-<a name="core-Values"></a>
+<a name="chaos_io-core-Values"></a>
 
 ### Values
 
@@ -156,7 +156,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| values | [Value](#core-Value) | repeated |  |
+| values | [Value](#chaos_io-core-Value) | repeated |  |
 
 
 
@@ -165,7 +165,7 @@
  
 
 
-<a name="core-ValueKind"></a>
+<a name="chaos_io-core-ValueKind"></a>
 
 ### ValueKind
 
@@ -191,14 +191,14 @@
 
 
 
-<a name="core_error-proto"></a>
+<a name="chaos-io_core_error-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## core/error.proto
+## chaos-io/core/error.proto
 
 
 
-<a name="core-Error"></a>
+<a name="chaos_io-core-Error"></a>
 
 ### Error
 
@@ -206,9 +206,9 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| code | [ErrorCode](#core-ErrorCode) |  |  |
+| code | [ErrorCode](#chaos_io-core-ErrorCode) |  |  |
 | message | [string](#string) |  |  |
-| details | [Value](#core-Value) | repeated |  |
+| details | [Value](#chaos_io-core-Value) | repeated |  |
 
 
 
@@ -224,14 +224,14 @@
 
 
 
-<a name="core_resource-proto"></a>
+<a name="chaos-io_core_resource-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## core/resource.proto
+## chaos-io/core/resource.proto
 
 
 
-<a name="core-Resource"></a>
+<a name="chaos_io-core-Resource"></a>
 
 ### Resource
 

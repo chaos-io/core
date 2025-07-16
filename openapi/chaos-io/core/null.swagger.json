@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "core/resource.proto",
+    "title": "chaos-io/core/null.proto",
     "version": "version not set"
   },
   "consumes": [
