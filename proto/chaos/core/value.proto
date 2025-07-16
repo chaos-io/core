@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package chaos_io.core;
+package chaos.core;
 
-import "chaos-io/core/null.proto";
+import "chaos/core/null.proto";
 
-option go_package = "github.com/chaos-io/core/go/core;core";
+option go_package = "github.com/chaos-io/core/go/chaos/core;core";
 
 enum ValueKind {
   VALUE_KIND_UNSPECIFIED = 0;

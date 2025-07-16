@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package chaos.core;
+
+import "chaos/core/error_code.proto";
+import "chaos/core/value.proto";
+
+option go_package = "github.com/chaos-io/core/go/chaos/core;core";
+
+message Error {
+  ErrorCode code = 1;
+  string message = 2;
+  repeated Value details = 3;
+}
