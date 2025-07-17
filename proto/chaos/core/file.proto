@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package chaos.core;
+
+import "chaos/core/time.proto";
+
+option go_package = "github.com/chaos-io/core/go/chaos/core;core";
+
+message File {
+  enum Mode {
+    MODE_UNSPECIFIED = 0;
+    MODE_DIR = 1;
+  }
+
+  message Info {
+    string name = 1;
+    string suffix = 2;
+    int64 size = 3;
+    Timestamp change_time = 10;
+    Timestamp modify_time = 11;
+  }
+
+  string name = 1;
+  bool is_dir = 2;
+  Mode mode = 5;
+  Info info = 6;
+  repeated File files = 10;
+}

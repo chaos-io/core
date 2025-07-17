@@ -20,6 +20,23 @@
 - [chaos/core/error.proto](#chaos_core_error-proto)
     - [Error](#chaos-core-Error)
   
+- [chaos/core/time.proto](#chaos_core_time-proto)
+    - [Date](#chaos-core-Date)
+    - [DateTime](#chaos-core-DateTime)
+    - [Duration](#chaos-core-Duration)
+    - [TimeOfDay](#chaos-core-TimeOfDay)
+    - [TimeZone](#chaos-core-TimeZone)
+    - [Timestamp](#chaos-core-Timestamp)
+  
+    - [DayOfWeek](#chaos-core-DayOfWeek)
+    - [Month](#chaos-core-Month)
+  
+- [chaos/core/file.proto](#chaos_core_file-proto)
+    - [File](#chaos-core-File)
+    - [File.Info](#chaos-core-File-Info)
+  
+    - [File.Mode](#chaos-core-File-Mode)
+  
 - [chaos/core/resource.proto](#chaos_core_resource-proto)
     - [Resource](#chaos-core-Resource)
   
@@ -215,6 +232,234 @@
 
 
  
+
+ 
+
+ 
+
+ 
+
+
+
+<a name="chaos_core_time-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## chaos/core/time.proto
+
+
+
+<a name="chaos-core-Date"></a>
+
+### Date
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| year | [int32](#int32) |  |  |
+| month | [int32](#int32) |  |  |
+| day | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="chaos-core-DateTime"></a>
+
+### DateTime
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| year | [int32](#int32) |  |  |
+| month | [int32](#int32) |  |  |
+| day | [int32](#int32) |  |  |
+| hour | [int32](#int32) |  |  |
+| minute | [int32](#int32) |  |  |
+| seconds | [int32](#int32) |  |  |
+| nanoseconds | [int32](#int32) |  |  |
+| time_zone | [TimeZone](#chaos-core-TimeZone) |  |  |
+
+
+
+
+
+
+<a name="chaos-core-Duration"></a>
+
+### Duration
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| seconds | [int64](#int64) |  |  |
+| nanoseconds | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="chaos-core-TimeOfDay"></a>
+
+### TimeOfDay
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| hours | [int32](#int32) |  |  |
+| minutes | [int32](#int32) |  |  |
+| seconds | [int32](#int32) |  |  |
+| nanoseconds | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="chaos-core-TimeZone"></a>
+
+### TimeZone
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| offset | [int32](#int32) |  |  |
+| name | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="chaos-core-Timestamp"></a>
+
+### Timestamp
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| seconds | [int64](#int64) |  |  |
+| nanoseconds | [int32](#int32) |  |  |
+
+
+
+
+
+ 
+
+
+<a name="chaos-core-DayOfWeek"></a>
+
+### DayOfWeek
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| DAY_OF_WEEK_UNSPECIFIED | 0 |  |
+| DAY_OF_WEEK_MONDAY | 1 |  |
+| DAY_OF_WEEK_TUESDAY | 2 |  |
+| DAY_OF_WEEK_WEDNESDAY | 3 |  |
+| DAY_OF_WEEK_THURSDAY | 4 |  |
+| DAY_OF_WEEK_FRIDAY | 5 |  |
+| DAY_OF_WEEK_SATURDAY | 6 |  |
+| DAY_OF_WEEK_SUNDAY | 7 |  |
+
+
+
+<a name="chaos-core-Month"></a>
+
+### Month
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| MONTH_UNSPECIFIED | 0 |  |
+| MONTH_JANUARY | 1 |  |
+| MONTH_FEBRUARY | 2 |  |
+| MONTH_MARCH | 3 |  |
+| MONTH_APRIL | 4 |  |
+| MONTH_MAY | 5 |  |
+| MONTH_JUNE | 6 |  |
+| MONTH_JULY | 7 |  |
+| MONTH_AUGUST | 8 |  |
+| MONTH_SEPTEMBER | 9 |  |
+| MONTH_OCTOBER | 10 |  |
+| MONTH_NOVEMBER | 11 |  |
+| MONTH_DECEMBER | 12 |  |
+
+
+ 
+
+ 
+
+ 
+
+
+
+<a name="chaos_core_file-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## chaos/core/file.proto
+
+
+
+<a name="chaos-core-File"></a>
+
+### File
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| name | [string](#string) |  |  |
+| is_dir | [bool](#bool) |  |  |
+| mode | [File.Mode](#chaos-core-File-Mode) |  |  |
+| info | [File.Info](#chaos-core-File-Info) |  |  |
+| files | [File](#chaos-core-File) | repeated |  |
+
+
+
+
+
+
+<a name="chaos-core-File-Info"></a>
+
+### File.Info
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| name | [string](#string) |  |  |
+| suffix | [string](#string) |  |  |
+| size | [int64](#int64) |  |  |
+| change_time | [Timestamp](#chaos-core-Timestamp) |  |  |
+| modify_time | [Timestamp](#chaos-core-Timestamp) |  |  |
+
+
+
+
+
+ 
+
+
+<a name="chaos-core-File-Mode"></a>
+
+### File.Mode
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| MODE_UNSPECIFIED | 0 |  |
+| MODE_DIR | 1 |  |
+
 
  
 

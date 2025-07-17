@@ -1,12 +1,8 @@
 package:
   name: core
   version: v0.1.0
-  authors: 
-    - author: 
-      email: 
+  authors:
+    - author:
+      email:
       organization: chaos-io
-  license: 
-  dependencies: 
-    - repository: github.com/chaos-io/gokit
-      version: latest
   repository: github.com/chaos-io/core
