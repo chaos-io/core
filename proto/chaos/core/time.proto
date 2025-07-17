@@ -36,11 +36,6 @@ message Timestamp {
   int32 nanoseconds = 2;
 }
 
-message Duration {
-  int64 seconds = 1;
-  int32 nanoseconds = 2;
-}
-
 message TimeZone {
   int32 offset = 1;
   string name = 2;

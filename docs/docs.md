@@ -3,6 +3,9 @@
 
 ## Table of Contents
 
+- [chaos/core/duration.proto](#chaos_core_duration-proto)
+    - [Duration](#chaos-core-Duration)
+  
 - [chaos/core/error_code.proto](#chaos_core_error_code-proto)
     - [ErrorCode](#chaos-core-ErrorCode)
   
@@ -23,7 +26,6 @@
 - [chaos/core/time.proto](#chaos_core_time-proto)
     - [Date](#chaos-core-Date)
     - [DateTime](#chaos-core-DateTime)
-    - [Duration](#chaos-core-Duration)
     - [TimeOfDay](#chaos-core-TimeOfDay)
     - [TimeZone](#chaos-core-TimeZone)
     - [Timestamp](#chaos-core-Timestamp)
@@ -41,6 +43,38 @@
     - [Resource](#chaos-core-Resource)
   
 - [Scalar Value Types](#scalar-value-types)
+
+
+
+<a name="chaos_core_duration-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## chaos/core/duration.proto
+
+
+
+<a name="chaos-core-Duration"></a>
+
+### Duration
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| seconds | [int64](#int64) |  |  |
+| nanoseconds | [int32](#int32) |  |  |
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+ 
 
 
 
@@ -281,22 +315,6 @@
 | seconds | [int32](#int32) |  |  |
 | nanoseconds | [int32](#int32) |  |  |
 | time_zone | [TimeZone](#chaos-core-TimeZone) |  |  |
-
-
-
-
-
-
-<a name="chaos-core-Duration"></a>
-
-### Duration
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| seconds | [int64](#int64) |  |  |
-| nanoseconds | [int32](#int32) |  |  |
 
 
 
