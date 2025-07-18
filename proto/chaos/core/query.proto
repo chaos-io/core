@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package chaos.core;
+
+import "chaos/core/boxed.proto";
+
+option go_package = "github.com/chaos-io/core/go/chaos/core;core";
+
+message Query {
+  map<string, chaos.core.StringValues> values = 1;
+}

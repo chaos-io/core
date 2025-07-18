@@ -8,7 +8,7 @@ import (
 )
 
 const ObjectTypeName = "Object"
-const ObjectTypeFullName = "core.Object"
+const ObjectTypeFullName = "chaos.core.Object"
 
 // NewObject constructs a Struct from a general-purpose Go map.
 // The map keys must be valid UTF-8.

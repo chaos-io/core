@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package chaos.core;
+
+option go_package = "github.com/chaos-io/core/go/chaos/core;core";
+
+message Authority {
+  string user_info = 1;
+  string host = 2;
+  string port = 3;
+}

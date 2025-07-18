@@ -3,6 +3,32 @@
 
 ## Table of Contents
 
+- [chaos/core/authority.proto](#chaos_core_authority-proto)
+    - [Authority](#chaos-core-Authority)
+  
+- [chaos/core/boxed.proto](#chaos_core_boxed-proto)
+    - [BoolValue](#chaos-core-BoolValue)
+    - [BoolValues](#chaos-core-BoolValues)
+    - [BytesValue](#chaos-core-BytesValue)
+    - [Float32Value](#chaos-core-Float32Value)
+    - [Float32Values](#chaos-core-Float32Values)
+    - [Float64Value](#chaos-core-Float64Value)
+    - [Float64Values](#chaos-core-Float64Values)
+    - [Int32Value](#chaos-core-Int32Value)
+    - [Int32Values](#chaos-core-Int32Values)
+    - [Int64Value](#chaos-core-Int64Value)
+    - [Int64Values](#chaos-core-Int64Values)
+    - [StringMap](#chaos-core-StringMap)
+    - [StringMap.ValuesEntry](#chaos-core-StringMap-ValuesEntry)
+    - [StringValue](#chaos-core-StringValue)
+    - [StringValues](#chaos-core-StringValues)
+    - [StringsMap](#chaos-core-StringsMap)
+    - [StringsMap.ValuesEntry](#chaos-core-StringsMap-ValuesEntry)
+    - [Uint32Value](#chaos-core-Uint32Value)
+    - [Uint32Values](#chaos-core-Uint32Values)
+    - [Uint64Value](#chaos-core-Uint64Value)
+    - [Uint64Values](#chaos-core-Uint64Values)
+  
 - [chaos/core/duration.proto](#chaos_core_duration-proto)
     - [Duration](#chaos-core-Duration)
   
@@ -39,10 +65,383 @@
   
     - [File.Mode](#chaos-core-File-Mode)
   
+- [chaos/core/query.proto](#chaos_core_query-proto)
+    - [Query](#chaos-core-Query)
+    - [Query.ValuesEntry](#chaos-core-Query-ValuesEntry)
+  
 - [chaos/core/resource.proto](#chaos_core_resource-proto)
     - [Resource](#chaos-core-Resource)
   
+- [chaos/core/url.proto](#chaos_core_url-proto)
+    - [Url](#chaos-core-Url)
+  
 - [Scalar Value Types](#scalar-value-types)
+
+
+
+<a name="chaos_core_authority-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## chaos/core/authority.proto
+
+
+
+<a name="chaos-core-Authority"></a>
+
+### Authority
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_info | [string](#string) |  |  |
+| host | [string](#string) |  |  |
+| port | [string](#string) |  |  |
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+<a name="chaos_core_boxed-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## chaos/core/boxed.proto
+
+
+
+<a name="chaos-core-BoolValue"></a>
+
+### BoolValue
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| value | [bool](#bool) |  |  |
+
+
+
+
+
+
+<a name="chaos-core-BoolValues"></a>
+
+### BoolValues
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| values | [bool](#bool) | repeated |  |
+
+
+
+
+
+
+<a name="chaos-core-BytesValue"></a>
+
+### BytesValue
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| value | [bytes](#bytes) |  |  |
+
+
+
+
+
+
+<a name="chaos-core-Float32Value"></a>
+
+### Float32Value
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| value | [float](#float) |  |  |
+
+
+
+
+
+
+<a name="chaos-core-Float32Values"></a>
+
+### Float32Values
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| values | [float](#float) | repeated |  |
+
+
+
+
+
+
+<a name="chaos-core-Float64Value"></a>
+
+### Float64Value
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| value | [double](#double) |  |  |
+
+
+
+
+
+
+<a name="chaos-core-Float64Values"></a>
+
+### Float64Values
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| values | [double](#double) | repeated |  |
+
+
+
+
+
+
+<a name="chaos-core-Int32Value"></a>
+
+### Int32Value
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| value | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="chaos-core-Int32Values"></a>
+
+### Int32Values
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| values | [int32](#int32) | repeated |  |
+
+
+
+
+
+
+<a name="chaos-core-Int64Value"></a>
+
+### Int64Value
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| value | [int64](#int64) |  |  |
+
+
+
+
+
+
+<a name="chaos-core-Int64Values"></a>
+
+### Int64Values
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| values | [int64](#int64) | repeated |  |
+
+
+
+
+
+
+<a name="chaos-core-StringMap"></a>
+
+### StringMap
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| values | [StringMap.ValuesEntry](#chaos-core-StringMap-ValuesEntry) | repeated |  |
+
+
+
+
+
+
+<a name="chaos-core-StringMap-ValuesEntry"></a>
+
+### StringMap.ValuesEntry
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| key | [string](#string) |  |  |
+| value | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="chaos-core-StringValue"></a>
+
+### StringValue
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| value | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="chaos-core-StringValues"></a>
+
+### StringValues
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| values | [string](#string) | repeated |  |
+
+
+
+
+
+
+<a name="chaos-core-StringsMap"></a>
+
+### StringsMap
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| values | [StringsMap.ValuesEntry](#chaos-core-StringsMap-ValuesEntry) | repeated |  |
+
+
+
+
+
+
+<a name="chaos-core-StringsMap-ValuesEntry"></a>
+
+### StringsMap.ValuesEntry
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| key | [string](#string) |  |  |
+| value | [StringValues](#chaos-core-StringValues) |  |  |
+
+
+
+
+
+
+<a name="chaos-core-Uint32Value"></a>
+
+### Uint32Value
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| value | [uint32](#uint32) |  |  |
+
+
+
+
+
+
+<a name="chaos-core-Uint32Values"></a>
+
+### Uint32Values
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| values | [uint32](#uint32) | repeated |  |
+
+
+
+
+
+
+<a name="chaos-core-Uint64Value"></a>
+
+### Uint64Value
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| value | [uint64](#uint64) |  |  |
+
+
+
+
+
+
+<a name="chaos-core-Uint64Values"></a>
+
+### Uint64Values
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| values | [uint64](#uint64) | repeated |  |
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+ 
 
 
 
@@ -487,6 +886,53 @@
 
 
 
+<a name="chaos_core_query-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## chaos/core/query.proto
+
+
+
+<a name="chaos-core-Query"></a>
+
+### Query
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| values | [Query.ValuesEntry](#chaos-core-Query-ValuesEntry) | repeated |  |
+
+
+
+
+
+
+<a name="chaos-core-Query-ValuesEntry"></a>
+
+### Query.ValuesEntry
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| key | [string](#string) |  |  |
+| value | [StringValues](#chaos-core-StringValues) |  |  |
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
 <a name="chaos_core_resource-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
@@ -504,6 +950,44 @@
 | ----- | ---- | ----- | ----------- |
 | id | [string](#string) |  |  |
 | name | [string](#string) |  |  |
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+<a name="chaos_core_url-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## chaos/core/url.proto
+
+
+
+<a name="chaos-core-Url"></a>
+
+### Url
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| scheme | [string](#string) |  |  |
+| authority | [Authority](#chaos-core-Authority) |  |  |
+| path | [string](#string) |  |  |
+| raw_path | [string](#string) |  |  |
+| query | [Query](#chaos-core-Query) |  |  |
+| raw_query | [string](#string) |  |  |
+| fragment | [string](#string) |  |  |
+| raw_fragment | [string](#string) |  |  |
 
 
 

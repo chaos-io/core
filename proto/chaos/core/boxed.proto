@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+package chaos.core;
+
+option go_package = "github.com/chaos-io/core/go/chaos/core;core";
+
+message BoolValue {
+  bool value = 1;
+}
+
+message Int32Value {
+  int32 value = 1;
+}
+
+message Int64Value {
+  int64 value = 1;
+}
+
+message Uint32Value {
+  uint32 value = 1;
+}
+
+message Uint64Value {
+  uint64 value = 1;
+}
+
+message Float32Value {
+  float value = 1;
+}
+
+message Float64Value {
+  double value = 1;
+}
+
+message StringValue {
+  string value = 1;
+}
+
+message BytesValue {
+  bytes value = 1;
+}
+
+message BoolValues {
+  repeated bool values = 1;
+}
+
+message Int32Values {
+  repeated int32 values = 1;
+}
+
+message Int64Values {
+  repeated int64 values = 1;
+}
+
+message Uint32Values {
+  repeated uint32 values = 1;
+}
+
+message Uint64Values {
+  repeated uint64 values = 1;
+}
+
+message Float32Values {
+  repeated float values = 1;
+}
+
+message Float64Values {
+  repeated double values = 1;
+}
+
+message StringValues {
+  repeated string values = 1;
+}
+
+message StringMap {
+  map<string, string> values = 1;
+}
+
+message StringsMap {
+  map<string, StringValues> values = 1;
+}

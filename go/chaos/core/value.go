@@ -10,7 +10,7 @@ import (
 )
 
 const ValueTypeName = "Value"
-const ValueTypeFullName = "core.Value"
+const ValueTypeFullName = "chaos.core.Value"
 
 // NewValue constructs a Value from a general-purpose Go interface.
 //
