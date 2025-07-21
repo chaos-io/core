@@ -3,6 +3,7 @@ package core
 import (
 	"net/url"
 	"strconv"
+	"strings"
 )
 
 func NewUrlQuery(kvs ...any) *Query {
@@ -38,7 +39,8 @@ func (x *Query) FromUrlValues(values url.Values) *Query {
 }
 
 func (x *Query) Add(k string, v any) *Query {
-	if x != nil {
+	k = strings.TrimSpace(k)
+	if x != nil && k != "" {
 		if x.Values[k] == nil {
 			x.Values[k] = &StringValues{}
 		}
@@ -48,7 +50,8 @@ func (x *Query) Add(k string, v any) *Query {
 }
 
 func (x *Query) Set(k string, v any) *Query {
-	if x != nil {
+	k = strings.TrimSpace(k)
+	if x != nil && k != "" {
 		x.Values[k] = &StringValues{
 			Values: queryValueFormat(v),
 		}
