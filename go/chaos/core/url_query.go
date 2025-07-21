@@ -90,5 +90,13 @@ func queryValueFormat(val any) []string {
 		return v
 	}
 
+	if c, ok := val.(ToStringConverter); ok {
+		return []string{c.ToString()}
+	}
+
+	if f, ok := val.(Formatter); ok {
+		return []string{f.Format()}
+	}
+
 	return []string{}
 }
