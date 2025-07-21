@@ -29,8 +29,9 @@ func (x *Url) Parse(rawUrl string) error {
 
 	x.Scheme = u.Scheme
 	x.Authority = &Authority{
-		Host: u.Hostname(),
-		Port: u.Port(),
+		UserInfo: u.User.String(),
+		Host:     u.Hostname(),
+		Port:     u.Port(),
 	}
 
 	if x.Authority.Host == "" && (u.Scheme == "" || u.Opaque == "") && urlSchemaPattern.MatchString(rawUrl) {
@@ -46,9 +47,7 @@ func (x *Url) Parse(rawUrl string) error {
 	}
 
 	x.Path = u.Path
-	x.RawPath = u.RawPath
 	x.Fragment = u.Fragment
-	x.RawFragment = u.RawFragment
 
 	x.Query = &Query{
 		Values: make(map[string]*StringValues),
@@ -72,16 +71,28 @@ func (x *Url) Format() string {
 		return ""
 	}
 
+	var user *url.Userinfo // default nil
 	host := ""
 	if x.Authority != nil {
 		host = x.Authority.Host
 		if x.Authority.Port != "" {
 			host += ":" + x.Authority.Port
 		}
+
+		if x.Authority.UserInfo != "" {
+			userinfo := x.Authority.UserInfo
+			segments := strings.Split(userinfo, ":")
+			if len(segments) == 1 {
+				user = url.User(segments[0])
+			} else {
+				user = url.UserPassword(segments[0], segments[1])
+			}
+		}
 	}
 
 	u := url.URL{
 		Scheme:   x.Scheme,
+		User:     user,
 		Host:     host,
 		Path:     x.Path,
 		Fragment: x.Fragment,
@@ -114,14 +125,18 @@ func (x *Url) FormatWithoutSchema() string {
 	}
 
 	u := &Url{
-		Authority: &Authority{
-			Host: x.GetAuthority().GetHost(),
-			Port: x.GetAuthority().GetPort(),
-		},
 		Path:     x.Path,
 		Query:    x.Query,
 		Fragment: x.Fragment,
 	}
 
-	return strings.TrimPrefix(u.String(), "//")
+	if x.Authority != nil {
+		u.Authority = &Authority{
+			UserInfo: x.GetAuthority().GetUserInfo(),
+			Host:     x.GetAuthority().GetHost(),
+			Port:     x.GetAuthority().GetPort(),
+		}
+	}
+
+	return strings.TrimPrefix(u.Format(), "//")
 }

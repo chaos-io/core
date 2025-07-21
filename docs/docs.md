@@ -983,11 +983,8 @@
 | scheme | [string](#string) |  |  |
 | authority | [Authority](#chaos-core-Authority) |  |  |
 | path | [string](#string) |  |  |
-| raw_path | [string](#string) |  |  |
 | query | [Query](#chaos-core-Query) |  |  |
-| raw_query | [string](#string) |  |  |
 | fragment | [string](#string) |  |  |
-| raw_fragment | [string](#string) |  |  |
 
 
 
