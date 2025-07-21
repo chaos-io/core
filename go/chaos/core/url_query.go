@@ -1,9 +1,15 @@
 package core
 
 import (
+	"encoding/csv"
+	"io"
 	"net/url"
+	"reflect"
+	"regexp"
 	"strconv"
 	"strings"
+
+	jsoniter "github.com/json-iterator/go"
 )
 
 func NewUrlQuery(kvs ...any) *Query {
@@ -59,6 +65,14 @@ func (x *Query) Set(k string, v any) *Query {
 	return x
 }
 
+func (x *Query) Del(k string) *Query {
+	k = strings.TrimSpace(k)
+	if x != nil && k != "" {
+		delete(x.Values, k)
+	}
+	return x
+}
+
 func queryValueFormat(val any) []string {
 	switch v := val.(type) {
 	case bool:
@@ -102,4 +116,142 @@ func queryValueFormat(val any) []string {
 	}
 
 	return []string{}
+}
+
+// Unmarshal
+// normal: name=Tom
+// list:
+//
+//	ids=1&ids=2
+//	ids[0]=6&ids[1]=7
+//	ids=1,2,3
+//	ids=[1,2,3]
+//
+// map:
+//
+//	user[name]=Tom
+//
+// object:
+//
+//	filter={"page":1}
+func (x *Query) Unmarshal(k string, v any) error {
+	if x == nil || x.Values == nil {
+		return nil
+	}
+
+	param, ok := x.Values[k]
+	if !ok || param == nil || len(param.Values) == 0 {
+		return nil
+	}
+
+	kind := reflect.Indirect(reflect.ValueOf(v)).Kind()
+	if kind == reflect.Slice || kind == reflect.Array {
+		return decodeSlice(param.Values, v)
+	}
+
+	return decodeValue(param.Values[0], v)
+}
+
+func UnmarshalParam(k string, v any) error {
+	if k == "" {
+		return nil
+	}
+
+	kind := reflect.Indirect(reflect.ValueOf(v)).Kind()
+	if kind == reflect.Slice || kind == reflect.Array {
+		return decodeSlice(strings.Split(k, ","), v)
+	}
+
+	return decodeValue(k, v)
+}
+
+func decodeSlice(values []string, v any) error {
+	if len(values) == 1 {
+		valStr := strings.TrimSpace(values[0])
+		if strings.HasPrefix(valStr, "[") {
+			return jsoniter.ConfigFastest.UnmarshalFromString(valStr, &v)
+		} else {
+			if isStringSlice(v) {
+				values = splitQuoteString(valStr)
+			} else {
+				valStr = "[" + valStr + "]"
+				return jsoniter.ConfigFastest.UnmarshalFromString(valStr, &v)
+			}
+		}
+	}
+
+	if isStringSlice(v) {
+		for i, val := range values {
+			if !IsQuotedString(val, DoubleQuote) {
+				values[i] = strconv.Quote(val)
+			}
+		}
+	}
+
+	arrayStr := "[" + strings.Join(values, ",") + "]"
+	return jsoniter.ConfigFastest.UnmarshalFromString(arrayStr, &v)
+}
+
+func decodeValue(value string, v any) error {
+	val := reflect.Indirect(reflect.ValueOf(v))
+	if val.Kind() == reflect.String {
+		val.SetString(value)
+		return nil
+	}
+	return jsoniter.ConfigFastest.UnmarshalFromString(value, v)
+}
+
+func isStringSlice(v any) bool {
+	t := reflect.TypeOf(v)
+	if t.Kind() == reflect.Ptr {
+		t = t.Elem()
+	}
+
+	if t.Kind() == reflect.Slice {
+		t = t.Elem()
+		if t.Kind() == reflect.String {
+			return true
+		}
+	}
+	return false
+}
+
+var separator = regexp.MustCompile(`" *, *"`)
+
+func splitQuoteString(s string) []string {
+	if !IsQuotedString(s, DoubleQuote) {
+		return strings.Split(s, `,`)
+	}
+
+	vals := separator.Split(s, -1)
+	if len(vals) > 1 {
+		vals[0] += `"`
+		vals[len(vals)-1] = `"` + vals[len(vals)-1]
+
+		for i := 1; i < len(vals)-1; i++ {
+			vals[i] = strconv.Quote(strings.TrimSpace(vals[i]))
+		}
+	}
+
+	return vals
+}
+
+func splitQuoteString2(s string) []string {
+	r := csv.NewReader(strings.NewReader(s))
+	r.TrimLeadingSpace = true
+
+	record, err := r.Read()
+	if err != nil && err != io.EOF {
+		parts := strings.Split(s, ",")
+		for i, part := range parts {
+			parts[i] = strconv.Quote(strings.TrimSpace(part))
+		}
+		return parts
+	}
+
+	for i, val := range record {
+		record[i] = `"` + val + `"`
+		//record[i] = strconv.Quote(val)
+	}
+	return record
 }

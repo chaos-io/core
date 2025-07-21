@@ -9,7 +9,7 @@ import (
 
 var urlSchemaPattern = regexp.MustCompile(`^([a-z0-9+\-.]+://)|mailto:|news:`)
 
-func ParesUrl(rawUrl string) (*Url, error) {
+func ParseUrl(rawUrl string) (*Url, error) {
 	u := &Url{}
 	if err := u.Parse(rawUrl); err != nil {
 		return nil, err

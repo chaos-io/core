@@ -4,7 +4,7 @@ const UrlTypeName = "Url"
 const UrlTypeFullName = "chaos.core.Url"
 
 func NewUrl(url string) (*Url, error) {
-	u, err := ParesUrl(url)
+	u, err := ParseUrl(url)
 	if err != nil {
 		return nil, err
 	}
