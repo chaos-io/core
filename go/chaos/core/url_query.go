@@ -44,6 +44,14 @@ func (x *Query) FromUrlValues(values url.Values) *Query {
 	return x
 }
 
+func (x *Query) Has(k string) bool {
+	if x != nil {
+		_, ok := x.Values[k]
+		return ok
+	}
+	return false
+}
+
 func (x *Query) Add(k string, v any) *Query {
 	k = strings.TrimSpace(k)
 	if x != nil && k != "" {
