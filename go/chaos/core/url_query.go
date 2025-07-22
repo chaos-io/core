@@ -152,17 +152,17 @@ func (x *Query) Unmarshal(k string, v any) error {
 	return decodeValue(param.Values[0], v)
 }
 
-func UnmarshalParam(k string, v any) error {
-	if k == "" {
+func UnmarshalParam(str string, v any) error {
+	if str == "" {
 		return nil
 	}
 
 	kind := reflect.Indirect(reflect.ValueOf(v)).Kind()
 	if kind == reflect.Slice || kind == reflect.Array {
-		return decodeSlice(strings.Split(k, ","), v)
+		return decodeSlice(strings.Split(str, ","), v)
 	}
 
-	return decodeValue(k, v)
+	return decodeValue(str, v)
 }
 
 func decodeSlice(values []string, v any) error {
@@ -182,6 +182,7 @@ func decodeSlice(values []string, v any) error {
 
 	if isStringSlice(v) {
 		for i, val := range values {
+			val = strings.TrimSpace(val)
 			if !IsQuotedString(val, DoubleQuote) {
 				values[i] = strconv.Quote(val)
 			}

@@ -117,7 +117,7 @@ func TestQuery_Set(t *testing.T) {
 	}
 }
 
-func TestQuery_Unmarshal_StringSlice(t *testing.T) {
+func TestQuery_Unmarshal(t *testing.T) {
 	tests := []struct {
 		name    string
 		query   *Query
@@ -144,6 +144,30 @@ func TestQuery_Unmarshal_StringSlice(t *testing.T) {
 			vals := ptr.Elem().Interface()
 			if !reflect.DeepEqual(vals, tt.want) {
 				t.Errorf("Unmarshal() = %v, want %v", vals, tt.want)
+			}
+		})
+	}
+}
+
+func TestUnmarshalParam(t *testing.T) {
+	tests := []struct {
+		name    string
+		str     string
+		typ     reflect.Type
+		want    any
+		wantErr bool
+	}{
+		{name: "string-slice-1", str: "bar,bba", typ: reflect.TypeOf([]string{}), want: []string{"bar", "bba"}, wantErr: false},
+		{name: "string-slice-2", str: `"bar", "bba"`, typ: reflect.TypeOf([]string{}), want: []string{"bar", "bba"}, wantErr: false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			ptr := reflect.New(tt.typ)
+			if err := UnmarshalParam(tt.str, ptr.Interface()); (err != nil) != tt.wantErr {
+				t.Errorf("UnmarshalParam() error = %v, wantErr %v", err, tt.wantErr)
+			}
+			if got := ptr.Elem().Interface(); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("UnmarshalParam() = %v, want %v", got, tt.want)
 			}
 		})
 	}
