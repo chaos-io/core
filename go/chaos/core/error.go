@@ -6,14 +6,9 @@ import (
 )
 
 func NewError(code *ErrorCode, message string, arguments ...any) *Error {
-	msg := message
-	if len(arguments) > 0 {
-		msg = fmt.Sprintf(message, arguments...)
-	}
-
 	return &Error{
 		Code:    code,
-		Message: msg,
+		Message: getMessage(message, arguments...),
 	}
 }
 
@@ -25,11 +20,7 @@ func NewErrorFrom(code int32, message string, arguments ...any) *Error {
 		err.Code = &ErrorCode{Code: code}
 	}
 
-	err.Message = message
-	if len(arguments) > 0 {
-		err.Message = fmt.Sprintf(message, arguments...)
-	}
-
+	err.Message = getMessage(message, arguments...)
 	return err
 }
 
@@ -75,4 +66,21 @@ func (e *Error) AddDetail(detail any) *Error {
 		e.Details = append(e.Details, v)
 	}
 	return e
+}
+
+func getMessage(template string, fmtArgs ...any) string {
+	if len(fmtArgs) == 0 {
+		return template
+	}
+
+	if template != "" {
+		return fmt.Sprintf(template, fmtArgs...)
+	}
+
+	if len(fmtArgs) == 1 {
+		if str, ok := fmtArgs[0].(string); ok {
+			return str
+		}
+	}
+	return fmt.Sprint(fmtArgs...)
 }
