@@ -7,7 +7,10 @@ import (
 type basicError Error
 
 func newBasicError(code *ErrorCode, message string, arguments ...any) *basicError {
-	return (*basicError)(NewError(code, message, arguments...))
+	if len(arguments) == 0 {
+		return (*basicError)(NewError(code, message))
+	}
+	return (*basicError)(NewFormattedError(code, message, arguments...))
 }
 
 func (e *basicError) Error() string {

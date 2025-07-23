@@ -5,23 +5,32 @@ import (
 	"fmt"
 )
 
-func NewError(code *ErrorCode, message string, arguments ...any) *Error {
+func NewError(code *ErrorCode, message string) *Error {
 	return &Error{
 		Code:    code,
-		Message: getMessage(message, arguments...),
+		Message: message,
 	}
 }
 
-func NewErrorFrom(code int32, message string, arguments ...any) *Error {
-	err := &Error{}
+func NewFormattedError(code *ErrorCode, format string, arguments ...any) *Error {
+	return &Error{
+		Code:    code,
+		Message: fmt.Sprintf(format, arguments...),
+	}
+}
+
+func NewErrorFrom(code int32, message string) *Error {
+	err := &Error{Message: message}
 	if ec, ok := errorCodeIndex[code]; ok {
 		err.Code = ec
 	} else {
 		err.Code = &ErrorCode{Code: code}
 	}
-
-	err.Message = getMessage(message, arguments...)
 	return err
+}
+
+func NewFormattedErrorFrom(code int32, format string, arguments ...any) *Error {
+	return NewErrorFrom(code, fmt.Sprintf(format, arguments...))
 }
 
 func (e *Error) Is(err error) bool {
@@ -66,21 +75,4 @@ func (e *Error) AddDetail(detail any) *Error {
 		e.Details = append(e.Details, v)
 	}
 	return e
-}
-
-func getMessage(template string, fmtArgs ...any) string {
-	if len(fmtArgs) == 0 {
-		return template
-	}
-
-	if template != "" {
-		return fmt.Sprintf(template, fmtArgs...)
-	}
-
-	if len(fmtArgs) == 1 {
-		if str, ok := fmtArgs[0].(string); ok {
-			return str
-		}
-	}
-	return fmt.Sprint(fmtArgs...)
 }
