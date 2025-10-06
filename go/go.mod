@@ -3,6 +3,7 @@ module github.com/chaos-io/core/go
 go 1.22
 
 require (
+	github.com/araddon/dateparse v0.0.0-20210429162001-6b43995a97de
 	github.com/json-iterator/go v1.1.12
 	github.com/stretchr/testify v1.8.1
 	go.uber.org/multierr v1.11.0
