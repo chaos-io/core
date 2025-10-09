@@ -8,22 +8,23 @@ import (
 	"go.uber.org/zap"
 )
 
-var defaultLog *SugaredLogger
+var defaultLog *zap.SugaredLogger = newDefaultLog()
+var defaultLevel zap.AtomicLevel
 
-func init() {
-	defaultLog = New(NewDefaultConfig())
+func newDefaultLog() *zap.SugaredLogger {
+	return NewSugaredLogger(NewDefaultConfig())
 }
 
 // Logger add a new caller, so -1 default
-func Logger() *SugaredLogger {
+func Logger() *zap.SugaredLogger {
 	return defaultLog.WithOptions(zap.AddCallerSkip(-1))
 }
 
-func logger() *SugaredLogger {
+func logger() *zap.SugaredLogger {
 	return defaultLog
 }
 
-func With(args ...interface{}) *SugaredLogger {
+func With(args ...interface{}) *zap.SugaredLogger {
 	return defaultLog.With(args...)
 }
 
