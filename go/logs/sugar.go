@@ -21,9 +21,7 @@ import (
 func NewSugaredLogger(cfg *Config) *zap.SugaredLogger {
 	sl := &zap.SugaredLogger{}
 	defaultLevel = zap.NewAtomicLevel()
-	if err := defaultLevel.UnmarshalText([]byte(cfg.Level)); err != nil {
-		log.Printf("failed to parse sugar level: %s\n", err)
-	}
+	SetLevel(cfg.Level)
 
 	if len(cfg.LevelPattern) > 0 && cfg.LevelPort > 0 {
 		http.HandleFunc(cfg.LevelPattern, defaultLevel.ServeHTTP)

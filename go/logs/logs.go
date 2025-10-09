@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"log"
 
 	"go.uber.org/zap"
 )
@@ -26,6 +27,16 @@ func logger() *zap.SugaredLogger {
 
 func With(args ...interface{}) *zap.SugaredLogger {
 	return defaultLog.With(args...)
+}
+
+func GetLevel() string {
+	return defaultLevel.String()
+}
+
+func SetLevel(level string) {
+	if err := defaultLevel.UnmarshalText([]byte(level)); err != nil {
+		log.Printf("failed to parse sugar level: %s\n", err)
+	}
 }
 
 // Debug logs a message at DebugLevel. The message includes any fields passed
