@@ -68,7 +68,7 @@ func (codec *ValueCodec) DecodeAny(a jsoniter.Any) (*Value, error) {
 	case jsoniter.ArrayValue:
 		val := make([]*Value, 0)
 		a.ToVal(&val)
-		return NewValueArray(val...), nil
+		return NewArrayValue(val...), nil
 	default:
 		return nil, errors.New("type is invalid")
 	}
@@ -101,9 +101,9 @@ func (codec *ValueCodec) Encode(ptr unsafe.Pointer, stream *jsoniter.Stream) {
 	case *Value_BytesValue:
 		stream.WriteString(Base64Prefix + base64.StdEncoding.EncodeToString(v.BytesValue))
 	case *Value_ValuesValue:
-		stream.WriteVal(v.ValuesValue.Values)
+		stream.WriteVal(v.ValuesValue.Vals)
 	case *Value_ObjectValue:
-		stream.WriteVal(v.ObjectValue.Fields)
+		stream.WriteVal(v.ObjectValue.Vals)
 	default:
 		stream.WriteNil()
 	}

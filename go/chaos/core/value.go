@@ -3,10 +3,12 @@ package core
 import (
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"math"
+	"reflect"
 	"unicode/utf8"
 
-	"google.golang.org/protobuf/runtime/protoimpl"
+	jsoniter "github.com/json-iterator/go"
 )
 
 const ValueTypeName = "Value"
@@ -31,8 +33,8 @@ const ValueTypeFullName = "chaos.core.Value"
 //
 // When converting an int64 or uint64 to a NumberValue, numeric precision loss
 // is possible since they are stored as a float64.
-func NewValue(v any) (*Value, error) {
-	switch v := v.(type) {
+func NewValue(val any) (*Value, error) {
+	switch v := val.(type) {
 	case nil:
 		return NewNullValue(), nil
 	case bool:
@@ -64,19 +66,20 @@ func NewValue(v any) (*Value, error) {
 	case json.Number:
 		n, err := v.Float64()
 		if err != nil {
-			return nil, protoimpl.X.NewError("invalid number format %q, expected a float64: %v", v, err)
+			return nil, fmt.Errorf("invalid number format %q, expected a float64: %v", v, err)
 		}
 		return NewNumberValue(n), nil
 	case string:
 		if !utf8.ValidString(v) {
-			return nil, protoimpl.X.NewError("invalid UTF-8 in string: %q", v)
+			return nil, fmt.Errorf("invalid UTF-8 in string: %q", v)
 		}
 		return NewStringValue(v), nil
 	case []byte:
 		s := base64.StdEncoding.EncodeToString(v)
 		return NewStringValue(s), nil
+		// return NewBytesValue(v), nil
 	case map[string]any:
-		v2, err := NewObject(v)
+		v2, err := NewObjectFromMap(v)
 		if err != nil {
 			return nil, err
 		}
@@ -88,8 +91,44 @@ func NewValue(v any) (*Value, error) {
 		}
 		return NewValuesValue(v2), nil
 	default:
-		return nil, protoimpl.X.NewError("invalid type: %T", v)
+		_val := reflect.ValueOf(val)
+		typ := reflect.Indirect(_val).Type()
+		if _val.Kind() == reflect.Ptr {
+			_val = _val.Elem()
+			typ = typ.Elem()
+		}
+
+		switch typ.Kind() {
+		case reflect.Struct:
+			m, err := structToMap(val)
+			if err != nil {
+				return nil, err
+			}
+
+			obj, err := NewObjectFromMap(m)
+			if err != nil {
+				return nil, err
+			}
+			return NewObjectValue(obj), nil
+			// return nil, fmt.Errorf("struct type %T must be explicitly converted", val)
+		default:
+			return nil, fmt.Errorf("invalid type: %T", v)
+		}
 	}
+}
+
+func structToMap(val any) (map[string]any, error) {
+	bytes, err := jsoniter.Marshal(val)
+	if err != nil {
+		return nil, err
+	}
+
+	var m map[string]any
+	if err := jsoniter.Unmarshal(bytes, &m); err != nil {
+		return nil, err
+	}
+
+	return m, nil
 }
 
 // NewNullValue constructs a new null Value.
@@ -130,13 +169,13 @@ func NewInt64Value(v int64) *Value {
 
 	var val uint64
 	if v == math.MinInt64 {
-		//val = uint64(math.MinInt64) + 1
+		// val = uint64(math.MinInt64) + 1
 		val = uint64(1) << 63
 	} else {
 		val = uint64(-v)
 	}
 
-	return &Value{Kind: &Value_PositiveValue{PositiveValue: val}}
+	return &Value{Kind: &Value_NegativeValue{NegativeValue: val}}
 }
 
 func NewUintValue(v uint) *Value {
@@ -159,6 +198,14 @@ func NewUint64Value(v uint64) *Value {
 	return &Value{Kind: &Value_PositiveValue{PositiveValue: v}}
 }
 
+func NewNegativeValue(v uint64) *Value {
+	return &Value{Kind: &Value_NegativeValue{NegativeValue: v}}
+}
+
+func NewPositiveValue(v uint64) *Value {
+	return &Value{Kind: &Value_PositiveValue{PositiveValue: v}}
+}
+
 func NewFloat32Value(v float32) *Value {
 	return NewFloat64Value(float64(v))
 }
@@ -177,21 +224,101 @@ func NewBytesValue(v []byte) *Value {
 }
 
 func NewMapValue(v map[string]*Value) *Value {
-	return &Value{Kind: &Value_ObjectValue{ObjectValue: &Object{Fields: v}}}
+	return &Value{Kind: &Value_ObjectValue{ObjectValue: &Object{Vals: v}}}
 }
 
 // NewObjectValue constructs a new struct Value.
-func NewObjectValue(v *Object) *Value {
-	return &Value{Kind: &Value_ObjectValue{ObjectValue: v}}
+func NewObjectValue(obj *Object) *Value {
+	return &Value{Kind: &Value_ObjectValue{ObjectValue: obj}}
 }
 
 // NewValuesValue constructs a new list Value.
-func NewValuesValue(v *Values) *Value {
-	return &Value{Kind: &Value_ValuesValue{ValuesValue: v}}
+func NewValuesValue(vals *Values) *Value {
+	return &Value{Kind: &Value_ValuesValue{ValuesValue: vals}}
 }
 
-func NewValueArray(values ...*Value) *Value {
-	return &Value{Kind: &Value_ValuesValue{ValuesValue: &Values{Values: values}}}
+func NewArrayValue(vals ...*Value) *Value {
+	return &Value{Kind: &Value_ValuesValue{ValuesValue: &Values{Vals: vals}}}
+}
+
+func NewIntArrayValue(vals ...int) *Value {
+	_vals := make([]*Value, 0, len(vals))
+	for _, v := range vals {
+		_vals = append(_vals, NewIntValue(v))
+	}
+	return &Value{Kind: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
+}
+
+func NewInt32ArrayValue(vals ...int32) *Value {
+	_vals := make([]*Value, 0, len(vals))
+	for _, v := range vals {
+		_vals = append(_vals, NewInt32Value(v))
+	}
+	return &Value{Kind: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
+}
+
+func NewInt64ArrayValue(vals ...int64) *Value {
+	_vals := make([]*Value, 0, len(vals))
+	for _, v := range vals {
+		_vals = append(_vals, NewInt64Value(v))
+	}
+	return &Value{Kind: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
+}
+
+func NewUintArrayValue(vals ...uint) *Value {
+	_vals := make([]*Value, 0, len(vals))
+	for _, v := range vals {
+		_vals = append(_vals, NewUintValue(v))
+	}
+	return &Value{Kind: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
+}
+
+func NewUint32ArrayValue(vals ...uint32) *Value {
+	_vals := make([]*Value, 0, len(vals))
+	for _, v := range vals {
+		_vals = append(_vals, NewUint32Value(v))
+	}
+	return &Value{Kind: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
+}
+
+func NewUint64ArrayValue(vals ...uint64) *Value {
+	_vals := make([]*Value, 0, len(vals))
+	for _, v := range vals {
+		_vals = append(_vals, NewUint64Value(v))
+	}
+	return &Value{Kind: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
+}
+
+func NewFloat32ArrayValue(vals ...float32) *Value {
+	_vals := make([]*Value, 0, len(vals))
+	for _, v := range vals {
+		_vals = append(_vals, NewFloat32Value(v))
+	}
+	return &Value{Kind: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
+}
+
+func NewFloat64ArrayValue(vals ...float64) *Value {
+	_vals := make([]*Value, 0, len(vals))
+	for _, v := range vals {
+		_vals = append(_vals, NewFloat64Value(v))
+	}
+	return &Value{Kind: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
+}
+
+func NewStringArrayValue(vals ...string) *Value {
+	_vals := make([]*Value, 0, len(vals))
+	for _, v := range vals {
+		_vals = append(_vals, NewStringValue(v))
+	}
+	return &Value{Kind: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
+}
+
+func NewObjectArrayValue(vals ...*Object) *Value {
+	_vals := make([]*Value, 0, len(vals))
+	for _, v := range vals {
+		_vals = append(_vals, NewObjectValue(v))
+	}
+	return &Value{Kind: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
 }
 
 // AsInterface converts x to a general-purpose Go interface.
@@ -203,37 +330,37 @@ func NewValueArray(values ...*Value) *Value {
 // converted as strings to remain compatible with MarshalJSON.
 func (x *Value) AsInterface() any {
 	switch v := x.GetKind().(type) {
+	case *Value_NullValue:
+		return nil
+	case *Value_BoolValue:
+		return v.BoolValue
+	case *Value_PositiveValue:
+		return v.PositiveValue
+	case *Value_NegativeValue:
+		if v.NegativeValue == uint64(1)<<63 {
+			return math.MinInt64
+		}
+		return -int64(v.NegativeValue)
 	case *Value_NumberValue:
-		if v != nil {
-			switch {
-			case math.IsNaN(v.NumberValue):
-				return "NaN"
-			case math.IsInf(v.NumberValue, +1):
-				return "Infinity"
-			case math.IsInf(v.NumberValue, -1):
-				return "-Infinity"
-			default:
-				return v.NumberValue
-			}
+		switch {
+		case math.IsNaN(v.NumberValue):
+			return "NaN"
+		case math.IsInf(v.NumberValue, +1):
+			return "Infinity"
+		case math.IsInf(v.NumberValue, -1):
+			return "-Infinity"
+		default:
+			return v.NumberValue
 		}
 	case *Value_StringValue:
-		if v != nil {
-			return v.StringValue
-		}
-	case *Value_BoolValue:
-		if v != nil {
-			return v.BoolValue
-		}
+		return v.StringValue
 	case *Value_ObjectValue:
-		if v != nil {
-			return v.ObjectValue.AsMap()
-		}
+		return v.ObjectValue.AsMap()
 	case *Value_ValuesValue:
-		if v != nil {
-			return v.ValuesValue.AsSlice()
-		}
+		return v.ValuesValue.AsSlice()
+	default:
+		return v
 	}
-	return nil
 }
 
 func (x *Value) GetBool() bool {
@@ -300,14 +427,14 @@ func (x *Value) GetValues() *Values {
 
 func (x *Value) GetValueArray() []*Value {
 	if values := x.GetValuesValue(); values != nil {
-		return values.Values
+		return values.Vals
 	}
 	return nil
 }
 
 func (x *Value) GetObjectArray() []*Object {
 	if values := x.GetValueArray(); len(values) > 0 {
-		objs := make([]*Object, len(values))
+		objs := make([]*Object, 0, len(values))
 		for _, v := range values {
 			objs = append(objs, v.GetObject())
 		}

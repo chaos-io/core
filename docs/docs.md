@@ -40,7 +40,7 @@
   
 - [chaos/core/value.proto](#chaos_core_value-proto)
     - [Object](#chaos-core-Object)
-    - [Object.FieldsEntry](#chaos-core-Object-FieldsEntry)
+    - [Object.ValsEntry](#chaos-core-Object-ValsEntry)
     - [Value](#chaos-core-Value)
     - [Values](#chaos-core-Values)
   
@@ -552,16 +552,16 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| fields | [Object.FieldsEntry](#chaos-core-Object-FieldsEntry) | repeated |  |
+| vals | [Object.ValsEntry](#chaos-core-Object-ValsEntry) | repeated |  |
 
 
 
 
 
 
-<a name="chaos-core-Object-FieldsEntry"></a>
+<a name="chaos-core-Object-ValsEntry"></a>
 
-### Object.FieldsEntry
+### Object.ValsEntry
 
 
 
@@ -606,7 +606,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| values | [Value](#chaos-core-Value) | repeated |  |
+| vals | [Value](#chaos-core-Value) | repeated |  |
 
 
 
