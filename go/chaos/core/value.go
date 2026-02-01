@@ -12,7 +12,7 @@ import (
 )
 
 const ValueTypeName = "Value"
-const ValueTypeFullName = "chaos.core.Value"
+const ValueTypeFullName = "core.Value"
 
 // NewValue constructs a Value from a general-purpose Go interface.
 //
@@ -92,11 +92,10 @@ func NewValue(val any) (*Value, error) {
 		return NewValuesValue(v2), nil
 	default:
 		_val := reflect.ValueOf(val)
-		typ := reflect.Indirect(_val).Type()
 		if _val.Kind() == reflect.Ptr {
 			_val = _val.Elem()
-			typ = typ.Elem()
 		}
+		typ := reflect.Indirect(_val).Type()
 
 		switch typ.Kind() {
 		case reflect.Struct:
@@ -363,6 +362,30 @@ func (x *Value) AsInterface() any {
 	}
 }
 
+func (x *Value) GetValueKind() ValueKind {
+	if x != nil {
+		switch x.GetKind().(type) {
+		case *Value_NullValue:
+			return ValueKind_VALUE_KIND_NULL
+		case *Value_BoolValue:
+			return ValueKind_VALUE_KIND_BOOLEAN
+		case *Value_NegativeValue, *Value_PositiveValue:
+			return ValueKind_VALUE_KIND_INTEGER
+		case *Value_NumberValue:
+			return ValueKind_VALUE_KIND_NUMBER
+		case *Value_StringValue:
+			return ValueKind_VALUE_KIND_STRING
+		case *Value_BytesValue:
+			return ValueKind_VALUE_KIND_BYTES
+		case *Value_ObjectValue:
+			return ValueKind_VALUE_KIND_OBJECT
+		case *Value_ValuesValue:
+			return ValueKind_VALUE_KIND_ARRAY
+		}
+	}
+	return ValueKind_VALUE_KIND_UNSPECIFIED
+}
+
 func (x *Value) GetBool() bool {
 	return x.GetBoolValue()
 }
@@ -421,8 +444,65 @@ func (x *Value) GetObject() *Object {
 	return x.GetObjectValue()
 }
 
-func (x *Value) GetValues() *Values {
-	return x.GetValuesValue()
+func (x *Value) GetValues() []*Value {
+	if vals := x.GetValuesValue(); vals != nil {
+		return vals.Vals
+	}
+	return nil
+}
+
+func (x *Value) GetBoolArray() []bool {
+	vals := x.GetValues()
+	array := make([]bool, 0, len(vals))
+	for _, v := range vals {
+		array = append(array, v.GetBoolValue())
+	}
+	return array
+}
+
+func (x *Value) GetIntArray() []int {
+	vals := x.GetValues()
+	array := make([]int, 0, len(vals))
+	for _, v := range vals {
+		array = append(array, v.GetInt())
+	}
+	return array
+}
+
+func (x *Value) GetInt64Array() []int64 {
+	vals := x.GetValues()
+	array := make([]int64, 0, len(vals))
+	for _, v := range vals {
+		array = append(array, v.GetInt64())
+	}
+	return array
+}
+
+func (x *Value) GetUintArray() []uint {
+	vals := x.GetValues()
+	array := make([]uint, 0, len(vals))
+	for _, v := range vals {
+		array = append(array, v.GetUint())
+	}
+	return array
+}
+
+func (x *Value) GetFloat64Array() []float64 {
+	vals := x.GetValues()
+	array := make([]float64, 0, len(vals))
+	for _, v := range vals {
+		array = append(array, v.GetFloat64())
+	}
+	return array
+}
+
+func (x *Value) GetStringArray() []string {
+	vals := x.GetValues()
+	array := make([]string, 0, len(vals))
+	for _, v := range vals {
+		array = append(array, v.GetStringValue())
+	}
+	return array
 }
 
 func (x *Value) GetValueArray() []*Value {

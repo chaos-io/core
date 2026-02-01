@@ -9,11 +9,10 @@ import (
 	"github.com/chaos-io/core/go/chaos/core/strcase"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/modern-go/reflect2"
-	"google.golang.org/protobuf/encoding/protojson"
 )
 
 const ObjectTypeName = "Object"
-const ObjectTypeFullName = "chaos.core.Object"
+const ObjectTypeFullName = "core.Object"
 
 func NewObject() *Object {
 	return &Object{Vals: make(map[string]*Value)}
@@ -93,21 +92,30 @@ func (x *Object) AsMap() map[string]any {
 }
 
 func (x *Object) To(val any) error {
-	if x != nil {
-		marshal, err := jsoniter.ConfigFastest.Marshal(x)
-		if err != nil {
-			return err
-		}
-		return jsoniter.ConfigFastest.Unmarshal(marshal, val)
+	if x == nil {
+		return nil
 	}
-	return nil
+	if val == nil {
+		return fmt.Errorf("Object.To: nil value")
+	}
+
+	marshal, err := jsoniter.ConfigFastest.Marshal(x)
+	if err != nil {
+		return err
+	}
+
+	return jsoniter.ConfigFastest.Unmarshal(marshal, &val)
 }
 
+// From converts a struct into Object.
+// Custom encoders override default JSON behavior when registered.
 func (x *Object) From(val any) error {
 	if x == nil {
 		return nil
 	}
-	if val == nil || reflect.ValueOf(val).IsZero() {
+
+	rv := reflect.ValueOf(val)
+	if !rv.IsValid() {
 		return nil
 	}
 
@@ -122,21 +130,25 @@ func (x *Object) From(val any) error {
 		return fmt.Errorf("invalid array object format: %T", v)
 	case *Value:
 		if obj := v.GetObject(); obj != nil {
-			x.Vals = obj.Vals
+			x.Vals = obj.Clone().Vals
 		} else {
 			return fmt.Errorf("invalid value object format: %T", v)
 		}
 	case *Object:
-		x.Vals = v.Vals
+		x.Vals = v.Clone().Vals
 	case map[string]*Value:
-		x.Vals = v
-	default:
-		valueOf := reflect.ValueOf(v)
-		typ := reflect.Indirect(valueOf).Type()
-		if valueOf.Kind() == reflect.Ptr {
-			valueOf = valueOf.Elem()
-			typ = reflect.Indirect(valueOf).Type()
+		x.Vals = make(map[string]*Value, len(v))
+		for _k, _v := range v {
+			x.Vals[_k] = _v
 		}
+	default:
+		if rv.Kind() == reflect.Ptr {
+			if rv.IsNil() {
+				return nil
+			}
+			rv = rv.Elem()
+		}
+		typ := rv.Type()
 		if typ.Kind() != reflect.Struct {
 			return fmt.Errorf("invalid default object format: %T", v)
 		}
@@ -144,22 +156,26 @@ func (x *Object) From(val any) error {
 		if _, ok := registerJSONEncoderTypes[typ.String()]; ok {
 			if marshal, err := jsoniter.ConfigFastest.Marshal(v); err != nil {
 				return err
-			} else if err := jsoniter.ConfigFastest.Unmarshal(marshal, &x.Vals); err != nil {
+			} else if err = jsoniter.ConfigFastest.Unmarshal(marshal, &x.Vals); err != nil {
 				return err
 			}
 		} else {
 			for i := 0; i < typ.NumField(); i++ {
-				key := typ.Field(i).Name
-				if key[0] >= 'a' && key[0] <= 'z' {
+				key, ok := jsonFieldName(typ.Field(i))
+				if !ok {
 					continue
 				}
-				if valueOf.Field(i).IsZero() {
+				// key := typ.Field(i).Name
+				// if key[0] >= 'a' && key[0] <= 'z' {
+				// 	continue
+				// }
+				if rv.Field(i).IsZero() {
 					continue
 				}
 
 				_val := &Value{}
 				if encoder, ok := registerJSONEncoderTypeFields[typ.String()+"."+key]; ok {
-					_typ := reflect2.TypeOf(valueOf)
+					_typ := reflect2.TypeOf(rv)
 					if _typ.Kind() == reflect.Ptr {
 						_typ = _typ.(*reflect2.UnsafePtrType).Elem()
 					}
@@ -170,21 +186,60 @@ func (x *Object) From(val any) error {
 						buf := &strings.Builder{}
 						stream := jsoniter.NewStream(jsoniter.ConfigFastest, buf, 1024)
 						encoder.Encode(f, stream)
+						_ = stream.Flush()
 						if err := jsoniter.ConfigFastest.Unmarshal(stream.Buffer(), &_val); err != nil {
 							return err
 						}
 					}
 				} else {
 					var err error
-					if _val, err = NewValue(valueOf.Field(i).Interface()); err != nil {
+					if _val, err = NewValue(rv.Field(i).Interface()); err != nil {
 						return err
 					}
 				}
+
 				x.Vals[strcase.ToLowerCamel(key)] = _val
 			}
 		}
 	}
 	return nil
+}
+
+func jsonFieldName(field reflect.StructField) (string, bool) {
+	// 非导出字段
+	if field.PkgPath != "" {
+		return "", false
+	}
+
+	tag := field.Tag.Get("json")
+	if tag == "-" {
+		return "", false
+	}
+
+	// 默认字段名
+	name := field.Name
+
+	if tag != "" {
+		n := strings.Split(tag, ",")[0]
+		if n != "" {
+			name = n
+		}
+	}
+
+	return name, true
+}
+
+func (x *Object) From2(val any) error {
+	if x == nil || val == nil {
+		return nil
+	}
+
+	marshal, err := jsoniter.ConfigFastest.Marshal(val)
+	if err != nil {
+		return err
+	}
+
+	return jsoniter.ConfigFastest.Unmarshal(marshal, &x.Vals)
 }
 
 func (x *Object) IsEmpty() bool {
@@ -210,7 +265,7 @@ func (x *Object) SetBool(key string, val bool) *Object {
 	return x
 }
 
-func (x *Object) SetByte(key string, val []byte) *Object {
+func (x *Object) SetBytes(key string, val []byte) *Object {
 	x.SetValue(key, NewBytesValue(val))
 	return x
 }
@@ -315,6 +370,93 @@ func (x *Object) SetObjectArray(key string, vals ...*Object) *Object {
 	return x
 }
 
+func (x *Object) GetValue(key string) *Value {
+	if x != nil && x.Vals != nil {
+		return x.Vals[key]
+	}
+	return nil
+}
+
+func (x *Object) GetBool(key string) bool {
+	return x.GetValue(key).GetBool()
+}
+
+func (x *Object) GetBytes(key string) []byte {
+	return x.GetValue(key).GetBytes()
+}
+
+func (x *Object) GetInt(key string) int {
+	return x.GetValue(key).GetInt()
+}
+
+func (x *Object) GetInt32(key string) int32 {
+	return x.GetValue(key).GetInt32()
+}
+
+func (x *Object) GetInt64(key string) int64 {
+	return x.GetValue(key).GetInt64()
+}
+
+func (x *Object) GetUint(key string) uint {
+	return x.GetValue(key).GetUint()
+}
+
+func (x *Object) GetUint32(key string) uint32 {
+	return x.GetValue(key).GetUint32()
+}
+
+func (x *Object) GetUint64(key string) uint64 {
+	return x.GetValue(key).GetUint64()
+}
+
+func (x *Object) GetFloat32(key string) float32 {
+	return x.GetValue(key).GetFloat32()
+}
+
+func (x *Object) GetFloat64(key string) float64 {
+	return x.GetValue(key).GetFloat64()
+}
+
+func (x *Object) GetString(key string) string {
+	return x.GetValue(key).GetString()
+}
+
+func (x *Object) GetObject(key string) *Object {
+	return x.GetValue(key).GetObject()
+}
+
+func (x *Object) GetBoolArray(key string) []bool {
+	return x.GetValue(key).GetBoolArray()
+}
+
+func (x *Object) GetIntArray(key string) []int {
+	return x.GetValue(key).GetIntArray()
+}
+
+func (x *Object) GetInt64Array(key string) []int64 {
+	return x.GetValue(key).GetInt64Array()
+}
+
+func (x *Object) GetUintArray(key string) []uint {
+	return x.GetValue(key).GetUintArray()
+}
+
+func (x *Object) GetFloat64Array(key string) []float64 {
+	return x.GetValue(key).GetFloat64Array()
+}
+
+func (x *Object) GetStringArray(key string) []string {
+	return x.GetValue(key).GetStringArray()
+}
+
+func (x *Object) GetObjectArray(key string) []*Object {
+	return x.GetValue(key).GetObjectArray()
+}
+
+func (x *Object) GetValueArray(key string) []*Value {
+	return x.GetValue(key).GetValueArray()
+}
+
 func (x *Object) Merge(o *Object) *Object {
 	if x != nil {
 		for k, v := range o.Vals {
@@ -356,13 +498,4 @@ func (x *Object) ToSnakeKeys() *Object {
 		obj.SetValue(strcase.ToSnake(k), v)
 	}
 	return obj
-}
-
-// MarshalJSON implements protobuf JSON encoding, not encoding/json semantics.
-func (x *Object) MarshalJSON() ([]byte, error) {
-	return protojson.Marshal(x)
-}
-
-func (x *Object) UnmarshalJSON(b []byte) error {
-	return protojson.Unmarshal(b, x)
 }

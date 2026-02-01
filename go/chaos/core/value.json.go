@@ -35,12 +35,11 @@ func (codec *ValueCodec) DecodeAny(a jsoniter.Any) (*Value, error) {
 		uintVal := a.ToUint64()
 
 		if intVal == 0 && uintVal > 0 { // > int64 max
-			return NewUint64Value(uint64(intVal)), nil
+			return NewUint64Value(uintVal), nil
 		} else if floatVal != float64(intVal) {
 			return NewFloat64Value(floatVal), nil
-		} else {
-			return NewInt64Value(intVal), nil
 		}
+		return NewInt64Value(intVal), nil
 	case jsoniter.StringValue:
 		str := a.ToString()
 		if strings.HasPrefix(str, Base64Prefix) {

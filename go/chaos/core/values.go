@@ -3,7 +3,7 @@ package core
 import "google.golang.org/protobuf/encoding/protojson"
 
 const ValuesTypeName = "Values"
-const ValuesTypeFullName = "chaos.core.Values"
+const ValuesTypeFullName = "core.Values"
 
 // NewValues constructs a ListValue from a general-purpose Go slice.
 // The slice elements are converted using NewValue.

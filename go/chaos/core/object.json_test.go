@@ -2,54 +2,40 @@ package core
 
 import (
 	"testing"
-	"unsafe"
 
 	jsoniter "github.com/json-iterator/go"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestObjectCodec_Decode(t *testing.T) {
-	val := "{\"k\":\"v\"}"
+	val := `{"key":"value"}`
 	obj := &Object{}
-	err := jsoniter.Unmarshal([]byte(val), obj)
+	err := jsoniter.ConfigFastest.UnmarshalFromString(val, obj)
 	assert.NoError(t, err)
-	assert.Equal(t, "v", obj.GetVals())
+	assert.Equal(t, "value", obj.GetString("key"))
+}
+
+type Foo struct {
+	Name   string  `json:"name"`
+	Object *Object `json:"object,omitempty"`
+}
+
+func TestObjectCodec_Decode_2(t *testing.T) {
+	foo := &Foo{}
+	err := jsoniter.ConfigFastest.UnmarshalFromString(`{"name":"foo","object":{"f1":"v1","f2":100}}`, foo)
+	assert.NoError(t, err)
+	assert.Equal(t, `v1`, foo.Object.GetString("f1"))
 }
 
 func TestObjectCodec_Encode(t *testing.T) {
-	type args struct {
-		ptr    unsafe.Pointer
-		stream *jsoniter.Stream
-	}
-	tests := []struct {
-		name string
-		args args
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			codec := &ObjectCodec{}
-			codec.Encode(tt.args.ptr, tt.args.stream)
-		})
-	}
+	str, err := jsoniter.ConfigFastest.MarshalToString(&Foo{Name: "foo"})
+	assert.NoError(t, err)
+	assert.Equal(t, `{"name":"foo"}`, str)
 }
 
 func TestObjectCodec_IsEmpty(t *testing.T) {
-	type args struct {
-		ptr unsafe.Pointer
-	}
-	tests := []struct {
-		name string
-		args args
-		want bool
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			codec := &ObjectCodec{}
-			assert.Equalf(t, tt.want, codec.IsEmpty(tt.args.ptr), "IsEmpty(%v)", tt.args.ptr)
-		})
-	}
+	Val := "{}"
+	object := &Object{}
+	err := jsoniter.ConfigFastest.UnmarshalFromString(Val, object)
+	assert.NoError(t, err)
 }
