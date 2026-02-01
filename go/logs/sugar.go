@@ -19,7 +19,6 @@ import (
 
 // NewSugaredLogger level string, encode string, port int, pattern string, initFields map[string]interface{}
 func NewSugaredLogger(cfg *Config) *zap.SugaredLogger {
-	sl := &zap.SugaredLogger{}
 	defaultLevel = zap.NewAtomicLevel()
 	SetLevel(cfg.Level)
 
@@ -73,9 +72,8 @@ func NewSugaredLogger(cfg *Config) *zap.SugaredLogger {
 	opts = append(opts, zap.AddCaller())
 	opts = append(opts, zap.AddCallerSkip(1))
 	opts = append(opts, zap.AddStacktrace(zap.FatalLevel))
-	sl = coreLogger.WithOptions(opts...).Sugar()
 
-	return sl
+	return coreLogger.WithOptions(opts...).Sugar()
 }
 
 func initWithConsole(encode string) zapcore.Core {

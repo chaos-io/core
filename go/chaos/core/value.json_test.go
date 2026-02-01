@@ -18,7 +18,7 @@ func TestValuesCodec_Decode(t *testing.T) {
 	err := jsoniter.ConfigDefault.UnmarshalFromString(json, vt)
 	assert.NoError(t, err)
 	assert.Equal(t, "bool", vt.Tag)
-	assert.Equal(t, ValueKind_VALUE_KIND_BOOLEAN, vt.Value.GetValueKind())
+	assert.Equal(t, ValueKind_VALUE_KIND_BOOLEAN, vt.Value.GetKind())
 }
 
 func TestValuesCodec_Decode2(t *testing.T) {
@@ -27,7 +27,7 @@ func TestValuesCodec_Decode2(t *testing.T) {
 	err := jsoniter.ConfigDefault.UnmarshalFromString(json, vt)
 	assert.NoError(t, err)
 	assert.Equal(t, "integer", vt.Tag)
-	assert.Equal(t, ValueKind_VALUE_KIND_INTEGER, vt.Value.GetValueKind())
+	assert.Equal(t, ValueKind_VALUE_KIND_INTEGER, vt.Value.GetKind())
 	assert.Equal(t, uint64(9223372036854775808), vt.Value.GetUint64())
 }
 
@@ -37,7 +37,7 @@ func TestValuesCodec_Decode3(t *testing.T) {
 	err := jsoniter.ConfigDefault.UnmarshalFromString(json, vt)
 	assert.NoError(t, err)
 	assert.Equal(t, "integer", vt.Tag)
-	assert.Equal(t, ValueKind_VALUE_KIND_INTEGER, vt.Value.GetValueKind())
+	assert.Equal(t, ValueKind_VALUE_KIND_INTEGER, vt.Value.GetKind())
 	assert.Equal(t, uint64(18446744073709551615), vt.Value.GetUint64())
 }
 
@@ -47,7 +47,7 @@ func TestValuesCodec_Decode4(t *testing.T) {
 	err := jsoniter.ConfigDefault.UnmarshalFromString(json, vt)
 	assert.NoError(t, err)
 	assert.Equal(t, "integer", vt.Tag)
-	assert.Equal(t, ValueKind_VALUE_KIND_INTEGER, vt.Value.GetValueKind())
+	assert.Equal(t, ValueKind_VALUE_KIND_INTEGER, vt.Value.GetKind())
 	assert.Equal(t, int64(-9223372036854775808), vt.Value.GetInt64())
 }
 
@@ -57,7 +57,7 @@ func TestValuesCodec_Decode5(t *testing.T) {
 	err := jsoniter.ConfigDefault.UnmarshalFromString(json, vt)
 	assert.NoError(t, err)
 	assert.Equal(t, "integer", vt.Tag)
-	assert.Equal(t, ValueKind_VALUE_KIND_NUMBER, vt.Value.GetValueKind())
+	assert.Equal(t, ValueKind_VALUE_KIND_NUMBER, vt.Value.GetKind())
 	assert.Equal(t, float64(-9223372036854776000), vt.Value.GetDouble())
 }
 
@@ -67,7 +67,7 @@ func TestValuesCodec_Decode6(t *testing.T) {
 	err := jsoniter.ConfigDefault.UnmarshalFromString(json, vt)
 	assert.NoError(t, err)
 	assert.Equal(t, "integer", vt.Tag)
-	assert.Equal(t, ValueKind_VALUE_KIND_NUMBER, vt.Value.GetValueKind())
+	assert.Equal(t, ValueKind_VALUE_KIND_NUMBER, vt.Value.GetKind())
 	assert.Equal(t, float64(18446744073709552000), vt.Value.GetDouble())
 }
 
@@ -77,7 +77,7 @@ func TestValuesCodec_Decode7(t *testing.T) {
 	err := jsoniter.ConfigDefault.UnmarshalFromString(json, vt)
 	assert.NoError(t, err)
 	assert.Equal(t, "integer", vt.Tag)
-	assert.Equal(t, ValueKind_VALUE_KIND_INTEGER, vt.Value.GetValueKind())
+	assert.Equal(t, ValueKind_VALUE_KIND_INTEGER, vt.Value.GetKind())
 	assert.Equal(t, int64(-9223372036854775808), vt.Value.GetInt64())
 }
 
@@ -87,6 +87,6 @@ func TestValuesCodec_Decode8(t *testing.T) {
 	err := jsoniter.ConfigDefault.UnmarshalFromString(json, vt)
 	assert.NoError(t, err)
 	assert.Equal(t, "integer", vt.Tag)
-	assert.Equal(t, ValueKind_VALUE_KIND_INTEGER, vt.Value.GetValueKind())
+	assert.Equal(t, ValueKind_VALUE_KIND_INTEGER, vt.Value.GetKind())
 	assert.Equal(t, int64(0), vt.Value.GetInt64())
 }

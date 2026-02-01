@@ -24,6 +24,7 @@ func TestObject_AsMap(t *testing.T) {
 		},
 	}
 	got, err := NewObjectFromMap(v)
+	assert.NoError(t, err)
 	bytes, err := jsoniter.Marshal(got)
 	assert.NoError(t, err)
 	fmt.Println(string(bytes))

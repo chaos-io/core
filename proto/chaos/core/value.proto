@@ -27,7 +27,7 @@ message Values {
 }
 
 message Value {
-  oneof kind {
+  oneof val {
     Null null_value = 1;
     bool bool_value = 2;
     uint64 positive_value = 3;

@@ -132,17 +132,17 @@ func structToMap(val any) (map[string]any, error) {
 
 // NewNullValue constructs a new null Value.
 func NewNullValue() *Value {
-	return &Value{Kind: &Value_NullValue{NullValue: &Null{}}}
+	return &Value{Val: &Value_NullValue{NullValue: &Null{}}}
 }
 
 // NewBoolValue constructs a new boolean Value.
 func NewBoolValue(v bool) *Value {
-	return &Value{Kind: &Value_BoolValue{BoolValue: v}}
+	return &Value{Val: &Value_BoolValue{BoolValue: v}}
 }
 
 // NewNumberValue constructs a new number Value.
 func NewNumberValue(v float64) *Value {
-	return &Value{Kind: &Value_NumberValue{NumberValue: v}}
+	return &Value{Val: &Value_NumberValue{NumberValue: v}}
 }
 
 func NewIntValue(v int) *Value {
@@ -163,7 +163,7 @@ func NewInt32Value(v int32) *Value {
 
 func NewInt64Value(v int64) *Value {
 	if v >= 0 {
-		return &Value{Kind: &Value_PositiveValue{PositiveValue: uint64(v)}}
+		return &Value{Val: &Value_PositiveValue{PositiveValue: uint64(v)}}
 	}
 
 	var val uint64
@@ -174,7 +174,7 @@ func NewInt64Value(v int64) *Value {
 		val = uint64(-v)
 	}
 
-	return &Value{Kind: &Value_NegativeValue{NegativeValue: val}}
+	return &Value{Val: &Value_NegativeValue{NegativeValue: val}}
 }
 
 func NewUintValue(v uint) *Value {
@@ -194,15 +194,15 @@ func NewUint32Value(v uint32) *Value {
 }
 
 func NewUint64Value(v uint64) *Value {
-	return &Value{Kind: &Value_PositiveValue{PositiveValue: v}}
+	return &Value{Val: &Value_PositiveValue{PositiveValue: v}}
 }
 
 func NewNegativeValue(v uint64) *Value {
-	return &Value{Kind: &Value_NegativeValue{NegativeValue: v}}
+	return &Value{Val: &Value_NegativeValue{NegativeValue: v}}
 }
 
 func NewPositiveValue(v uint64) *Value {
-	return &Value{Kind: &Value_PositiveValue{PositiveValue: v}}
+	return &Value{Val: &Value_PositiveValue{PositiveValue: v}}
 }
 
 func NewFloat32Value(v float32) *Value {
@@ -210,34 +210,34 @@ func NewFloat32Value(v float32) *Value {
 }
 
 func NewFloat64Value(v float64) *Value {
-	return &Value{Kind: &Value_NumberValue{NumberValue: v}}
+	return &Value{Val: &Value_NumberValue{NumberValue: v}}
 }
 
 // NewStringValue constructs a new string Value.
 func NewStringValue(v string) *Value {
-	return &Value{Kind: &Value_StringValue{StringValue: v}}
+	return &Value{Val: &Value_StringValue{StringValue: v}}
 }
 
 func NewBytesValue(v []byte) *Value {
-	return &Value{Kind: &Value_BytesValue{BytesValue: v}}
+	return &Value{Val: &Value_BytesValue{BytesValue: v}}
 }
 
 func NewMapValue(v map[string]*Value) *Value {
-	return &Value{Kind: &Value_ObjectValue{ObjectValue: &Object{Vals: v}}}
+	return &Value{Val: &Value_ObjectValue{ObjectValue: &Object{Vals: v}}}
 }
 
 // NewObjectValue constructs a new struct Value.
 func NewObjectValue(obj *Object) *Value {
-	return &Value{Kind: &Value_ObjectValue{ObjectValue: obj}}
+	return &Value{Val: &Value_ObjectValue{ObjectValue: obj}}
 }
 
 // NewValuesValue constructs a new list Value.
 func NewValuesValue(vals *Values) *Value {
-	return &Value{Kind: &Value_ValuesValue{ValuesValue: vals}}
+	return &Value{Val: &Value_ValuesValue{ValuesValue: vals}}
 }
 
 func NewArrayValue(vals ...*Value) *Value {
-	return &Value{Kind: &Value_ValuesValue{ValuesValue: &Values{Vals: vals}}}
+	return &Value{Val: &Value_ValuesValue{ValuesValue: &Values{Vals: vals}}}
 }
 
 func NewIntArrayValue(vals ...int) *Value {
@@ -245,7 +245,7 @@ func NewIntArrayValue(vals ...int) *Value {
 	for _, v := range vals {
 		_vals = append(_vals, NewIntValue(v))
 	}
-	return &Value{Kind: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
+	return &Value{Val: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
 }
 
 func NewInt32ArrayValue(vals ...int32) *Value {
@@ -253,7 +253,7 @@ func NewInt32ArrayValue(vals ...int32) *Value {
 	for _, v := range vals {
 		_vals = append(_vals, NewInt32Value(v))
 	}
-	return &Value{Kind: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
+	return &Value{Val: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
 }
 
 func NewInt64ArrayValue(vals ...int64) *Value {
@@ -261,7 +261,7 @@ func NewInt64ArrayValue(vals ...int64) *Value {
 	for _, v := range vals {
 		_vals = append(_vals, NewInt64Value(v))
 	}
-	return &Value{Kind: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
+	return &Value{Val: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
 }
 
 func NewUintArrayValue(vals ...uint) *Value {
@@ -269,7 +269,7 @@ func NewUintArrayValue(vals ...uint) *Value {
 	for _, v := range vals {
 		_vals = append(_vals, NewUintValue(v))
 	}
-	return &Value{Kind: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
+	return &Value{Val: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
 }
 
 func NewUint32ArrayValue(vals ...uint32) *Value {
@@ -277,7 +277,7 @@ func NewUint32ArrayValue(vals ...uint32) *Value {
 	for _, v := range vals {
 		_vals = append(_vals, NewUint32Value(v))
 	}
-	return &Value{Kind: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
+	return &Value{Val: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
 }
 
 func NewUint64ArrayValue(vals ...uint64) *Value {
@@ -285,7 +285,7 @@ func NewUint64ArrayValue(vals ...uint64) *Value {
 	for _, v := range vals {
 		_vals = append(_vals, NewUint64Value(v))
 	}
-	return &Value{Kind: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
+	return &Value{Val: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
 }
 
 func NewFloat32ArrayValue(vals ...float32) *Value {
@@ -293,7 +293,7 @@ func NewFloat32ArrayValue(vals ...float32) *Value {
 	for _, v := range vals {
 		_vals = append(_vals, NewFloat32Value(v))
 	}
-	return &Value{Kind: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
+	return &Value{Val: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
 }
 
 func NewFloat64ArrayValue(vals ...float64) *Value {
@@ -301,7 +301,7 @@ func NewFloat64ArrayValue(vals ...float64) *Value {
 	for _, v := range vals {
 		_vals = append(_vals, NewFloat64Value(v))
 	}
-	return &Value{Kind: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
+	return &Value{Val: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
 }
 
 func NewStringArrayValue(vals ...string) *Value {
@@ -309,7 +309,7 @@ func NewStringArrayValue(vals ...string) *Value {
 	for _, v := range vals {
 		_vals = append(_vals, NewStringValue(v))
 	}
-	return &Value{Kind: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
+	return &Value{Val: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
 }
 
 func NewObjectArrayValue(vals ...*Object) *Value {
@@ -317,7 +317,7 @@ func NewObjectArrayValue(vals ...*Object) *Value {
 	for _, v := range vals {
 		_vals = append(_vals, NewObjectValue(v))
 	}
-	return &Value{Kind: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
+	return &Value{Val: &Value_ValuesValue{ValuesValue: &Values{Vals: _vals}}}
 }
 
 // AsInterface converts x to a general-purpose Go interface.
@@ -328,7 +328,7 @@ func NewObjectArrayValue(vals ...*Object) *Value {
 // Floating-point values (i.e., "NaN", "Infinity", and "-Infinity") are
 // converted as strings to remain compatible with MarshalJSON.
 func (x *Value) AsInterface() any {
-	switch v := x.GetKind().(type) {
+	switch v := x.GetVal().(type) {
 	case *Value_NullValue:
 		return nil
 	case *Value_BoolValue:
@@ -362,9 +362,9 @@ func (x *Value) AsInterface() any {
 	}
 }
 
-func (x *Value) GetValueKind() ValueKind {
+func (x *Value) GetKind() ValueKind {
 	if x != nil {
-		switch x.GetKind().(type) {
+		switch x.GetVal().(type) {
 		case *Value_NullValue:
 			return ValueKind_VALUE_KIND_NULL
 		case *Value_BoolValue:
