@@ -2,12 +2,21 @@ syntax = "proto3";
 
 package chaos.core;
 
-import "chaos/core/authority.proto";
-import "chaos/core/query.proto";
+import "chaos/core/boxed.proto";
 
 option go_package = "github.com/chaos-io/core/go/chaos/core;core";
 
 message Url {
+  message Authority {
+    string user_info = 1;
+    string host = 2;
+    string port = 3;
+  }
+
+  message Query {
+    map<string, StringValues> vals = 1;
+  }
+
   string scheme = 1;
   Authority authority = 2;
   string path = 3;

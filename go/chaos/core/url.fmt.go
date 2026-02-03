@@ -59,7 +59,7 @@ func (x *Url) Parse(rawUrl string) error {
 	}
 	for k, v := range query {
 		x.Query.Values[k] = &StringValues{
-			Values: v,
+			Vals: v,
 		}
 	}
 

@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package chaos.http;
+
+import "chaos/core/time.proto";
+
+option go_package = "github.com/chaos-io/core/go/chaos/http;http";
+
+// 表示一个 HTTP Cookie（RFC 6265）
+message Cookie {
+  // cookie-name
+  string name = 1;
+
+  // cookie-value
+  string value = 2;
+
+  // Expires attribute (HTTP-date)
+  // 例如：Wed, 21 Oct 2015 07:28:00 GMT
+  core.Timestamp expires = 3;
+
+  // Max-Age attribute (seconds)
+  int32 max_age = 4;
+
+  // Domain attribute
+  string domain = 5;
+
+  // Path attribute
+  string path = 6;
+
+  // Secure attribute
+  bool secure = 7;
+
+  // HttpOnly attribute
+  bool http_only = 8;
+
+  // SameSite attribute
+  SameSite same_site = 9;
+}
+
+// SameSite 枚举（RFC 6265bis / 实际浏览器行为）
+enum SameSite {
+  SAME_SITE_UNSPECIFIED = 0;
+  SAME_SITE_LAX = 1;
+  SAME_SITE_STRICT = 2;
+  SAME_SITE_NONE = 3;
+}
