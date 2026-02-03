@@ -12,9 +12,9 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
-func NewUrlQuery(kvs ...any) *Query {
-	query := &Query{
-		Values: make(map[string]*StringValues),
+func NewUrlQuery(kvs ...any) *Url_Query {
+	query := &Url_Query{
+		Vals: make(map[string]*StringValues),
 	}
 
 	for i := 0; i < len(kvs)-1; i += 2 {
@@ -24,59 +24,59 @@ func NewUrlQuery(kvs ...any) *Query {
 	return query
 }
 
-func NewUrlQueryFrom(values url.Values) *Query {
-	query := &Query{
-		Values: make(map[string]*StringValues),
+func NewUrlQueryFrom(values url.Values) *Url_Query {
+	query := &Url_Query{
+		Vals: make(map[string]*StringValues),
 	}
 	return query.FromUrlValues(values)
 }
 
-func (x *Query) FromUrlValues(values url.Values) *Query {
+func (x *Url_Query) FromUrlValues(values url.Values) *Url_Query {
 	if x != nil {
-		if x.Values == nil {
-			x.Values = make(map[string]*StringValues)
+		if x.Vals == nil {
+			x.Vals = make(map[string]*StringValues)
 		}
 
 		for k, v := range values {
-			x.Values[k] = &StringValues{Values: v}
+			x.Vals[k] = &StringValues{Vals: v}
 		}
 	}
 	return x
 }
 
-func (x *Query) Has(k string) bool {
+func (x *Url_Query) Has(k string) bool {
 	if x != nil {
-		_, ok := x.Values[k]
+		_, ok := x.Vals[k]
 		return ok
 	}
 	return false
 }
 
-func (x *Query) Add(k string, v any) *Query {
+func (x *Url_Query) Add(k string, v any) *Url_Query {
 	k = strings.TrimSpace(k)
 	if x != nil && k != "" {
-		if x.Values[k] == nil {
-			x.Values[k] = &StringValues{}
+		if x.Vals[k] == nil {
+			x.Vals[k] = &StringValues{}
 		}
-		x.Values[k].Values = append(x.Values[k].Values, queryValueFormat(v)...)
+		x.Vals[k].Vals = append(x.Vals[k].Vals, queryValueFormat(v)...)
 	}
 	return x
 }
 
-func (x *Query) Set(k string, v any) *Query {
+func (x *Url_Query) Set(k string, v any) *Url_Query {
 	k = strings.TrimSpace(k)
 	if x != nil && k != "" {
-		x.Values[k] = &StringValues{
-			Values: queryValueFormat(v),
+		x.Vals[k] = &StringValues{
+			Vals: queryValueFormat(v),
 		}
 	}
 	return x
 }
 
-func (x *Query) Del(k string) *Query {
+func (x *Url_Query) Del(k string) *Url_Query {
 	k = strings.TrimSpace(k)
 	if x != nil && k != "" {
-		delete(x.Values, k)
+		delete(x.Vals, k)
 	}
 	return x
 }
@@ -142,22 +142,22 @@ func queryValueFormat(val any) []string {
 // object:
 //
 //	filter={"page":1}
-func (x *Query) Unmarshal(k string, v any) error {
-	if x == nil || x.Values == nil {
+func (x *Url_Query) Unmarshal(k string, v any) error {
+	if x == nil || x.Vals == nil {
 		return nil
 	}
 
-	param, ok := x.Values[k]
-	if !ok || param == nil || len(param.Values) == 0 {
+	param, ok := x.Vals[k]
+	if !ok || param == nil || len(param.Vals) == 0 {
 		return nil
 	}
 
 	kind := reflect.Indirect(reflect.ValueOf(v)).Kind()
 	if kind == reflect.Slice || kind == reflect.Array {
-		return decodeSlice(param.Values, v)
+		return decodeSlice(param.Vals, v)
 	}
 
-	return decodeValue(param.Values[0], v)
+	return decodeValue(param.Vals[0], v)
 }
 
 func UnmarshalParam(str string, v any) error {
@@ -260,7 +260,7 @@ func splitQuoteString2(s string) []string {
 
 	for i, val := range record {
 		record[i] = `"` + val + `"`
-		//record[i] = strconv.Quote(val)
+		// record[i] = strconv.Quote(val)
 	}
 	return record
 }

@@ -28,7 +28,7 @@ func (x *Url) Parse(rawUrl string) error {
 	}
 
 	x.Scheme = u.Scheme
-	x.Authority = &Authority{
+	x.Authority = &Url_Authority{
 		UserInfo: u.User.String(),
 		Host:     u.Hostname(),
 		Port:     u.Port(),
@@ -49,8 +49,8 @@ func (x *Url) Parse(rawUrl string) error {
 	x.Path = u.Path
 	x.Fragment = u.Fragment
 
-	x.Query = &Query{
-		Values: make(map[string]*StringValues),
+	x.Query = &Url_Query{
+		Vals: make(map[string]*StringValues),
 	}
 
 	query, err := url.ParseQuery(u.RawQuery)
@@ -58,7 +58,7 @@ func (x *Url) Parse(rawUrl string) error {
 		return err
 	}
 	for k, v := range query {
-		x.Query.Values[k] = &StringValues{
+		x.Query.Vals[k] = &StringValues{
 			Vals: v,
 		}
 	}
@@ -100,9 +100,9 @@ func (x *Url) Format() string {
 
 	if x.Query != nil {
 		query := url.Values{}
-		for k, v := range x.Query.Values {
+		for k, v := range x.Query.Vals {
 			if v != nil {
-				query[k] = v.Values
+				query[k] = v.Vals
 			}
 		}
 		u.RawQuery = query.Encode()
@@ -131,7 +131,7 @@ func (x *Url) FormatWithoutSchema() string {
 	}
 
 	if x.Authority != nil {
-		u.Authority = &Authority{
+		u.Authority = &Url_Authority{
 			UserInfo: x.GetAuthority().GetUserInfo(),
 			Host:     x.GetAuthority().GetHost(),
 			Port:     x.GetAuthority().GetPort(),
