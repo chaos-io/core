@@ -10,7 +10,7 @@ func newBasicError(code *ErrorCode, message string, arguments ...any) *basicErro
 	if len(arguments) == 0 {
 		return (*basicError)(NewError(code, message))
 	}
-	return (*basicError)(NewFormattedError(code, message, arguments...))
+	return (*basicError)(NewErrorf(code, message, arguments...))
 }
 
 func (e *basicError) Error() string {

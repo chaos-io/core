@@ -12,7 +12,7 @@ func NewError(code *ErrorCode, message string) *Error {
 	}
 }
 
-func NewFormattedError(code *ErrorCode, format string, arguments ...any) *Error {
+func NewErrorf(code *ErrorCode, format string, arguments ...any) *Error {
 	return &Error{
 		Code:    code,
 		Message: fmt.Sprintf(format, arguments...),
