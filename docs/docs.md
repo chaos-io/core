@@ -281,7 +281,7 @@ SameSite 枚举（RFC 6265bis / 实际浏览器行为）
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | version | [Version](#chaos-http-Version) |  |  |
-| stauts | [Status](#chaos-http-Status) |  |  |
+| status | [Status](#chaos-http-Status) |  |  |
 | header | [Header](#chaos-http-Header) |  |  |
 | body | [chaos.core.Value](#chaos-core-Value) |  |  |
 

@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func NewStatus(statusCode int, status string) *Status {
+func NewStatusFrom(statusCode int, status string) *Status {
 	s := &Status{}
 
 	if statusCode > 0 {

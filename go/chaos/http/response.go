@@ -41,7 +41,7 @@ func (x *Response) SyncFrom(response *http.Response) error {
 
 	x.Version = &Version{Major: int32(response.ProtoMajor), Minor: int32(response.ProtoMinor)}
 
-	x.Stauts = NewStatus(response.StatusCode, response.Status)
+	x.Status = NewStatusFrom(response.StatusCode, response.Status)
 
 	if len(response.Header) > 0 {
 		x.Header = NewHeaderFrom(response.Header)
