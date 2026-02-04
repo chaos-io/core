@@ -24,6 +24,9 @@
 - [chaos/http/status.proto](#chaos_http_status-proto)
     - [Status](#chaos-http-Status)
   
+- [chaos/http/response.proto](#chaos_http_response-proto)
+    - [Response](#chaos-http-Response)
+  
 - [Scalar Value Types](#scalar-value-types)
 
 
@@ -247,6 +250,40 @@ SameSite 枚举（RFC 6265bis / 实际浏览器行为）
 | ----- | ---- | ----- | ----------- |
 | code | [int32](#int32) |  |  |
 | reason | [string](#string) |  |  |
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+<a name="chaos_http_response-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## chaos/http/response.proto
+
+
+
+<a name="chaos-http-Response"></a>
+
+### Response
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| version | [Version](#chaos-http-Version) |  |  |
+| stauts | [Status](#chaos-http-Status) |  |  |
+| header | [Header](#chaos-http-Header) |  |  |
+| body | [chaos.core.Value](#chaos-core-Value) |  |  |
 
 
 
