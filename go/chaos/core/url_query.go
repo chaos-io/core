@@ -1,8 +1,7 @@
 package core
 
 import (
-	"encoding/csv"
-	"io"
+	"fmt"
 	"net/url"
 	"reflect"
 	"regexp"
@@ -127,87 +126,127 @@ func queryValueFormat(val any) []string {
 }
 
 // Unmarshal
-// normal: name=Tom
-// list:
+// list type
 //
-//	ids=1&ids=2
-//	ids[0]=6&ids[1]=7
-//	ids=1,2,3
-//	ids=[1,2,3]
+//	foo=bar&foo=baz
+//	foo=bar,baz
+//	foo="bar","baz"
+//	foo=["bar","baz"]
 //
-// map:
+// map
 //
-//	user[name]=Tom
+//	foo=key1,bar,key2,baz <not support>
 //
-// object:
+// object
 //
-//	filter={"page":1}
-func (x *Url_Query) Unmarshal(k string, v any) error {
+//	foo={"key1":"bar","key2","baz"}
+func (x *Url_Query) Unmarshal(name string, value interface{}) error {
 	if x == nil || x.Vals == nil {
 		return nil
 	}
 
-	param, ok := x.Vals[k]
+	param, ok := x.Vals[name]
 	if !ok || param == nil || len(param.Vals) == 0 {
 		return nil
 	}
 
-	kind := reflect.Indirect(reflect.ValueOf(v)).Kind()
-	if kind == reflect.Slice || kind == reflect.Array {
-		return decodeSlice(param.Vals, v)
-	}
+	v := reflect.Indirect(reflect.ValueOf(value))
+	switch v.Kind() {
+	case reflect.Slice, reflect.Array:
+		elem := v.Type().Elem()
+		isStringType := elem.Kind() == reflect.String
+		if elem.Kind() == reflect.Ptr {
+			if _, ok := reflect.New(elem.Elem()).Interface().(StringLike); ok {
+				isStringType = true
+			}
+		}
 
-	return decodeValue(param.Vals[0], v)
-}
-
-func UnmarshalParam(str string, v any) error {
-	if str == "" {
-		return nil
-	}
-
-	kind := reflect.Indirect(reflect.ValueOf(v)).Kind()
-	if kind == reflect.Slice || kind == reflect.Array {
-		return decodeSlice(strings.Split(str, ","), v)
-	}
-
-	return decodeValue(str, v)
-}
-
-func decodeSlice(values []string, v any) error {
-	if len(values) == 1 {
-		valStr := strings.TrimSpace(values[0])
-		if strings.HasPrefix(valStr, "[") {
-			return jsoniter.ConfigFastest.UnmarshalFromString(valStr, &v)
+		var sliceValue string
+		if len(param.Vals) == 1 {
+			sliceValue = param.Vals[0]
 		} else {
-			if isStringSlice(v) {
-				values = splitQuoteString(valStr)
-			} else {
-				valStr = "[" + valStr + "]"
-				return jsoniter.ConfigFastest.UnmarshalFromString(valStr, &v)
+			if isStringType {
+				for i := 0; i < len(param.Vals); i++ {
+					param.Vals[i] = QuoteString(param.Vals[i])
+				}
 			}
+			sliceValue = "[" + strings.Join(param.Vals, ",") + "]"
+		}
+		return UnmarshalParam(sliceValue, value)
+	default:
+		if len(param.Vals) > 0 {
+			return UnmarshalParam(param.Vals[0], value)
 		}
 	}
-
-	if isStringSlice(v) {
-		for i, val := range values {
-			val = strings.TrimSpace(val)
-			if !IsQuotedString(val, DoubleQuote) {
-				values[i] = strconv.Quote(val)
-			}
-		}
-	}
-
-	arrayStr := "[" + strings.Join(values, ",") + "]"
-	return jsoniter.ConfigFastest.UnmarshalFromString(arrayStr, &v)
+	return nil
 }
 
-func decodeValue(value string, v any) error {
-	val := reflect.Indirect(reflect.ValueOf(v))
-	if val.Kind() == reflect.String {
-		val.SetString(value)
+func UnmarshalParam(str string, value interface{}) error {
+	if len(str) == 0 {
 		return nil
 	}
-	return jsoniter.ConfigFastest.UnmarshalFromString(value, v)
+
+	v := reflect.Indirect(reflect.ValueOf(value))
+	switch v.Kind() {
+	case reflect.String:
+		v.SetString(str)
+	case reflect.Slice, reflect.Array:
+		elem := v.Type().Elem()
+		isStringType := elem.Kind() == reflect.String
+		if elem.Kind() == reflect.Ptr {
+			if _, ok := reflect.New(elem.Elem()).Interface().(StringLike); ok {
+				isStringType = true
+			}
+		}
+
+		str = strings.TrimSpace(str)
+		if len(str) > 0 {
+			if str[0] != '[' {
+				if isStringType {
+					vals := splitQuotedString(str)
+					for i := 0; i < len(vals); i++ {
+						vals[i] = strings.TrimSpace(vals[i])
+						vals[i] = QuoteString(vals[i])
+					}
+					str = "[" + strings.Join(vals, ",") + "]"
+				} else {
+					str = "[" + str + "]"
+				}
+			}
+			return jsoniter.Unmarshal([]byte(str), value)
+		}
+		return nil
+	default:
+		if _, ok := reflect.New(v.Type()).Interface().(StringLike); ok {
+			str = QuoteString(str)
+		}
+
+		err := jsoniter.ConfigFastest.Unmarshal([]byte(str), value)
+		if err != nil {
+			return fmt.Errorf("couldn't decode value from %v, error: %w", str, err)
+		}
+	}
+
+	return nil
+}
+
+var separator = regexp.MustCompile(`" *, *"`)
+
+func splitQuotedString(str string) []string {
+	if !IsQuotedString(str, `"`) {
+		return strings.Split(str, ",")
+	}
+
+	vals := separator.Split(str, -1)
+	if len(vals) > 1 {
+		vals[0] = vals[0] + `"`
+		vals[len(vals)-1] = `"` + vals[len(vals)-1]
+
+		for i := 1; i < len(vals)-1; i++ {
+			vals[i] = QuoteString(vals[i])
+		}
+	}
+	return vals
 }
 
 func isStringSlice(v any) bool {
@@ -223,44 +262,4 @@ func isStringSlice(v any) bool {
 		}
 	}
 	return false
-}
-
-var separator = regexp.MustCompile(`" *, *"`)
-
-func splitQuoteString(s string) []string {
-	if !IsQuotedString(s, DoubleQuote) {
-		return strings.Split(s, `,`)
-	}
-
-	vals := separator.Split(s, -1)
-	if len(vals) > 1 {
-		vals[0] += `"`
-		vals[len(vals)-1] = `"` + vals[len(vals)-1]
-
-		for i := 1; i < len(vals)-1; i++ {
-			vals[i] = strconv.Quote(strings.TrimSpace(vals[i]))
-		}
-	}
-
-	return vals
-}
-
-func splitQuoteString2(s string) []string {
-	r := csv.NewReader(strings.NewReader(s))
-	r.TrimLeadingSpace = true
-
-	record, err := r.Read()
-	if err != nil && err != io.EOF {
-		parts := strings.Split(s, ",")
-		for i, part := range parts {
-			parts[i] = strconv.Quote(strings.TrimSpace(part))
-		}
-		return parts
-	}
-
-	for i, val := range record {
-		record[i] = `"` + val + `"`
-		// record[i] = strconv.Quote(val)
-	}
-	return record
 }
