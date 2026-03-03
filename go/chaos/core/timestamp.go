@@ -1,6 +1,8 @@
 package core
 
-import "time"
+import (
+	"time"
+)
 
 func Now() *Timestamp {
 	return FromTime(time.Now())
@@ -71,4 +73,52 @@ func (x *Timestamp) Equal(u *Timestamp) bool {
 		return x.ToTime().Equal(u.ToTime())
 	}
 	return false
+}
+
+func (x *Timestamp) Compare(u *Timestamp) int {
+	if x != nil {
+		if u != nil {
+			return x.ToTime().Compare(u.ToTime())
+		} else {
+			return 1
+		}
+	}
+
+	if u != nil {
+		return -1
+	}
+	return 0
+}
+
+func (x *Timestamp) Date() *Date {
+	if x != nil {
+		year, month, day := x.ToTime().Date()
+		return &Date{
+			Year:  int32(year),
+			Month: int32(month),
+			Day:   int32(day),
+		}
+	}
+	return nil
+}
+
+func (x *Timestamp) Add(d *Duration) *Timestamp {
+	if x != nil && d != nil {
+		return FromTime(x.ToTime().Add(d.ToDuration()))
+	}
+	return nil
+}
+
+func (x *Timestamp) AddDate(year, month, day int) *Timestamp {
+	if x != nil {
+		return FromTime(x.ToTime().AddDate(year, month, day))
+	}
+	return nil
+}
+
+func (x *Timestamp) Sub(u *Timestamp) *Duration {
+	if x != nil {
+		return FromDuration(x.ToTime().Sub(u.ToTime()))
+	}
+	return nil
 }
