@@ -285,6 +285,33 @@
         
           
           <li>
+            <a href="#chaos%2fcore%2furl.proto">chaos/core/url.proto</a>
+            <ul>
+              
+                <li>
+                  <a href="#chaos.core.Url"><span class="badge">M</span>Url</a>
+                </li>
+              
+                <li>
+                  <a href="#chaos.core.Url.Authority"><span class="badge">M</span>Url.Authority</a>
+                </li>
+              
+                <li>
+                  <a href="#chaos.core.Url.Query"><span class="badge">M</span>Url.Query</a>
+                </li>
+              
+                <li>
+                  <a href="#chaos.core.Url.Query.ValsEntry"><span class="badge">M</span>Url.Query.ValsEntry</a>
+                </li>
+              
+              
+              
+              
+            </ul>
+          </li>
+        
+          
+          <li>
             <a href="#chaos%2fcore%2ferror_code.proto">chaos/core/error_code.proto</a>
             <ul>
               
@@ -428,33 +455,6 @@
               
                 <li>
                   <a href="#chaos.core.Resource"><span class="badge">M</span>Resource</a>
-                </li>
-              
-              
-              
-              
-            </ul>
-          </li>
-        
-          
-          <li>
-            <a href="#chaos%2fcore%2furl.proto">chaos/core/url.proto</a>
-            <ul>
-              
-                <li>
-                  <a href="#chaos.core.Url"><span class="badge">M</span>Url</a>
-                </li>
-              
-                <li>
-                  <a href="#chaos.core.Url.Authority"><span class="badge">M</span>Url.Authority</a>
-                </li>
-              
-                <li>
-                  <a href="#chaos.core.Url.Query"><span class="badge">M</span>Url.Query</a>
-                </li>
-              
-                <li>
-                  <a href="#chaos.core.Url.Query.ValsEntry"><span class="badge">M</span>Url.Query.ValsEntry</a>
                 </li>
               
               
@@ -1062,13 +1062,172 @@
     
       
       <div class="file-heading">
+        <h2 id="chaos/core/url.proto">chaos/core/url.proto</h2><a href="#title">Top</a>
+      </div>
+      <p></p>
+
+      
+        <h3 id="chaos.core.Url">Url</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>scheme</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>authority</td>
+                  <td><a href="#chaos.core.Url.Authority">Url.Authority</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>path</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>query</td>
+                  <td><a href="#chaos.core.Url.Query">Url.Query</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>fragment</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="chaos.core.Url.Authority">Url.Authority</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>user_info</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>host</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>port</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="chaos.core.Url.Query">Url.Query</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>vals</td>
+                  <td><a href="#chaos.core.Url.Query.ValsEntry">Url.Query.ValsEntry</a></td>
+                  <td>repeated</td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="chaos.core.Url.Query.ValsEntry">Url.Query.ValsEntry</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>key</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>value</td>
+                  <td><a href="#chaos.core.StringValues">StringValues</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+
+      
+
+      
+
+      
+    
+      
+      <div class="file-heading">
         <h2 id="chaos/core/error_code.proto">chaos/core/error_code.proto</h2><a href="#title">Top</a>
       </div>
       <p></p>
 
       
         <h3 id="chaos.core.ErrorCode">ErrorCode</h3>
-        <p></p>
+        <p>ErrorCode</p><p>format: {domain}.{code}.{name}</p>
 
         
           <table class="field-table">
@@ -1088,14 +1247,28 @@
                   <td>name</td>
                   <td><a href="#string">string</a></td>
                   <td></td>
-                  <td><p> </p></td>
+                  <td><p>the name of error code </p></td>
+                </tr>
+              
+                <tr>
+                  <td>domain</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>system, runtime, ... </p></td>
                 </tr>
               
                 <tr>
                   <td>description</td>
                   <td><a href="#string">string</a></td>
                   <td></td>
-                  <td><p> </p></td>
+                  <td><p>a detail description for the code </p></td>
+                </tr>
+              
+                <tr>
+                  <td>document</td>
+                  <td><a href="#chaos.core.Url">Url</a></td>
+                  <td></td>
+                  <td><p>the api document url for the error code </p></td>
                 </tr>
               
                 <tr>
@@ -1406,14 +1579,14 @@
                   <td>message</td>
                   <td><a href="#string">string</a></td>
                   <td></td>
-                  <td><p> </p></td>
+                  <td><p>a developer-facing error message </p></td>
                 </tr>
               
                 <tr>
                   <td>details</td>
                   <td><a href="#chaos.core.Value">Value</a></td>
                   <td>repeated</td>
-                  <td><p> </p></td>
+                  <td><p>a list if messages that carry the error details </p></td>
                 </tr>
               
             </tbody>
@@ -1978,165 +2151,6 @@
                 <tr>
                   <td>name</td>
                   <td><a href="#string">string</a></td>
-                  <td></td>
-                  <td><p> </p></td>
-                </tr>
-              
-            </tbody>
-          </table>
-
-          
-
-        
-      
-
-      
-
-      
-
-      
-    
-      
-      <div class="file-heading">
-        <h2 id="chaos/core/url.proto">chaos/core/url.proto</h2><a href="#title">Top</a>
-      </div>
-      <p></p>
-
-      
-        <h3 id="chaos.core.Url">Url</h3>
-        <p></p>
-
-        
-          <table class="field-table">
-            <thead>
-              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>scheme</td>
-                  <td><a href="#string">string</a></td>
-                  <td></td>
-                  <td><p> </p></td>
-                </tr>
-              
-                <tr>
-                  <td>authority</td>
-                  <td><a href="#chaos.core.Url.Authority">Url.Authority</a></td>
-                  <td></td>
-                  <td><p> </p></td>
-                </tr>
-              
-                <tr>
-                  <td>path</td>
-                  <td><a href="#string">string</a></td>
-                  <td></td>
-                  <td><p> </p></td>
-                </tr>
-              
-                <tr>
-                  <td>query</td>
-                  <td><a href="#chaos.core.Url.Query">Url.Query</a></td>
-                  <td></td>
-                  <td><p> </p></td>
-                </tr>
-              
-                <tr>
-                  <td>fragment</td>
-                  <td><a href="#string">string</a></td>
-                  <td></td>
-                  <td><p> </p></td>
-                </tr>
-              
-            </tbody>
-          </table>
-
-          
-
-        
-      
-        <h3 id="chaos.core.Url.Authority">Url.Authority</h3>
-        <p></p>
-
-        
-          <table class="field-table">
-            <thead>
-              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>user_info</td>
-                  <td><a href="#string">string</a></td>
-                  <td></td>
-                  <td><p> </p></td>
-                </tr>
-              
-                <tr>
-                  <td>host</td>
-                  <td><a href="#string">string</a></td>
-                  <td></td>
-                  <td><p> </p></td>
-                </tr>
-              
-                <tr>
-                  <td>port</td>
-                  <td><a href="#string">string</a></td>
-                  <td></td>
-                  <td><p> </p></td>
-                </tr>
-              
-            </tbody>
-          </table>
-
-          
-
-        
-      
-        <h3 id="chaos.core.Url.Query">Url.Query</h3>
-        <p></p>
-
-        
-          <table class="field-table">
-            <thead>
-              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>vals</td>
-                  <td><a href="#chaos.core.Url.Query.ValsEntry">Url.Query.ValsEntry</a></td>
-                  <td>repeated</td>
-                  <td><p> </p></td>
-                </tr>
-              
-            </tbody>
-          </table>
-
-          
-
-        
-      
-        <h3 id="chaos.core.Url.Query.ValsEntry">Url.Query.ValsEntry</h3>
-        <p></p>
-
-        
-          <table class="field-table">
-            <thead>
-              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>key</td>
-                  <td><a href="#string">string</a></td>
-                  <td></td>
-                  <td><p> </p></td>
-                </tr>
-              
-                <tr>
-                  <td>value</td>
-                  <td><a href="#chaos.core.StringValues">StringValues</a></td>
                   <td></td>
                   <td><p> </p></td>
                 </tr>

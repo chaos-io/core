@@ -9,6 +9,10 @@ option go_package = "github.com/chaos-io/core/go/chaos/core;core";
 
 message Error {
   ErrorCode code = 1;
+
+  // a developer-facing error message
   string message = 2;
-  repeated Value details = 3;
+
+  // a list if messages that carry the error details
+  repeated Value details = 10;
 }

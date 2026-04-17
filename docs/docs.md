@@ -29,6 +29,12 @@
 - [chaos/core/duration.proto](#chaos_core_duration-proto)
     - [Duration](#chaos-core-Duration)
   
+- [chaos/core/url.proto](#chaos_core_url-proto)
+    - [Url](#chaos-core-Url)
+    - [Url.Authority](#chaos-core-Url-Authority)
+    - [Url.Query](#chaos-core-Url-Query)
+    - [Url.Query.ValsEntry](#chaos-core-Url-Query-ValsEntry)
+  
 - [chaos/core/error_code.proto](#chaos_core_error_code-proto)
     - [ErrorCode](#chaos-core-ErrorCode)
   
@@ -64,12 +70,6 @@
   
 - [chaos/core/resource.proto](#chaos_core_resource-proto)
     - [Resource](#chaos-core-Resource)
-  
-- [chaos/core/url.proto](#chaos_core_url-proto)
-    - [Url](#chaos-core-Url)
-    - [Url.Authority](#chaos-core-Url-Authority)
-    - [Url.Query](#chaos-core-Url-Query)
-    - [Url.Query.ValsEntry](#chaos-core-Url-Query-ValsEntry)
   
 - [chaos/core/version.proto](#chaos_core_version-proto)
     - [Version](#chaos-core-Version)
@@ -443,6 +443,89 @@
 
 
 
+<a name="chaos_core_url-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## chaos/core/url.proto
+
+
+
+<a name="chaos-core-Url"></a>
+
+### Url
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| scheme | [string](#string) |  |  |
+| authority | [Url.Authority](#chaos-core-Url-Authority) |  |  |
+| path | [string](#string) |  |  |
+| query | [Url.Query](#chaos-core-Url-Query) |  |  |
+| fragment | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="chaos-core-Url-Authority"></a>
+
+### Url.Authority
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_info | [string](#string) |  |  |
+| host | [string](#string) |  |  |
+| port | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="chaos-core-Url-Query"></a>
+
+### Url.Query
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| vals | [Url.Query.ValsEntry](#chaos-core-Url-Query-ValsEntry) | repeated |  |
+
+
+
+
+
+
+<a name="chaos-core-Url-Query-ValsEntry"></a>
+
+### Url.Query.ValsEntry
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| key | [string](#string) |  |  |
+| value | [StringValues](#chaos-core-StringValues) |  |  |
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
 <a name="chaos_core_error_code-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
@@ -453,14 +536,17 @@
 <a name="chaos-core-ErrorCode"></a>
 
 ### ErrorCode
-
+ErrorCode
+format: {domain}.{code}.{name}
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | code | [int32](#int32) |  |  |
-| name | [string](#string) |  |  |
-| description | [string](#string) |  |  |
+| name | [string](#string) |  | the name of error code |
+| domain | [string](#string) |  | system, runtime, ... |
+| description | [string](#string) |  | a detail description for the code |
+| document | [Url](#chaos-core-Url) |  | the api document url for the error code |
 | http_status_code | [int32](#int32) |  |  |
 
 
@@ -623,8 +709,8 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | code | [ErrorCode](#chaos-core-ErrorCode) |  |  |
-| message | [string](#string) |  |  |
-| details | [Value](#chaos-core-Value) | repeated |  |
+| message | [string](#string) |  | a developer-facing error message |
+| details | [Value](#chaos-core-Value) | repeated | a list if messages that carry the error details |
 
 
 
@@ -869,89 +955,6 @@
 | ----- | ---- | ----- | ----------- |
 | id | [string](#string) |  |  |
 | name | [string](#string) |  |  |
-
-
-
-
-
- 
-
- 
-
- 
-
- 
-
-
-
-<a name="chaos_core_url-proto"></a>
-<p align="right"><a href="#top">Top</a></p>
-
-## chaos/core/url.proto
-
-
-
-<a name="chaos-core-Url"></a>
-
-### Url
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| scheme | [string](#string) |  |  |
-| authority | [Url.Authority](#chaos-core-Url-Authority) |  |  |
-| path | [string](#string) |  |  |
-| query | [Url.Query](#chaos-core-Url-Query) |  |  |
-| fragment | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="chaos-core-Url-Authority"></a>
-
-### Url.Authority
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| user_info | [string](#string) |  |  |
-| host | [string](#string) |  |  |
-| port | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="chaos-core-Url-Query"></a>
-
-### Url.Query
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| vals | [Url.Query.ValsEntry](#chaos-core-Url-Query-ValsEntry) | repeated |  |
-
-
-
-
-
-
-<a name="chaos-core-Url-Query-ValsEntry"></a>
-
-### Url.Query.ValsEntry
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| key | [string](#string) |  |  |
-| value | [StringValues](#chaos-core-StringValues) |  |  |
 
 
 

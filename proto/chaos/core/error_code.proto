@@ -2,11 +2,26 @@ syntax = "proto3";
 
 package chaos.core;
 
+import "chaos/core/url.proto";
+
 option go_package = "github.com/chaos-io/core/go/chaos/core;core";
 
+// ErrorCode
+// format: {domain}.{code}.{name}
 message ErrorCode {
   int32 code = 1;
+
+  // the name of error code
   string name = 2;
-  string description = 3;
-  int32 http_status_code = 4;
+
+  // system, runtime, ...
+  string domain = 3;
+
+  // a detail description for the code
+  string description = 5;
+
+  // the api document url for the error code
+  Url document = 6;
+
+  int32 http_status_code = 8;
 }

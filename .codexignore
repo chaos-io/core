@@ -1,0 +1,8 @@
+openapi/
+docs/
+.git
+.idea
+.vscode
+.DS_Store
+.gitignore
+.gitattributes

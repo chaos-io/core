@@ -27,7 +27,7 @@ func RegisterJSONTypeDecoder(typ string, decoder jsoniter.ValDecoder) {
 	jsoniter.RegisterTypeDecoder(typ, decoder)
 }
 
-func RegisterJSONTypeFieldEncoder(typ, field string, encoder jsoniter.ValEncoder) {
+func RegisterJSONFieldEncoder(typ, field string, encoder jsoniter.ValEncoder) {
 	jsoniter.RegisterFieldEncoder(typ, field, encoder)
 
 	registerJSONEncoderTypeFieldsOnce.Do(func() {
@@ -36,6 +36,6 @@ func RegisterJSONTypeFieldEncoder(typ, field string, encoder jsoniter.ValEncoder
 	registerJSONEncoderTypeFields[typ+"."+field] = encoder
 }
 
-func RegisterJSONTypeFieldsDecoder(typ, field string, decoder jsoniter.ValDecoder) {
+func RegisterJSONFieldDecoder(typ, field string, decoder jsoniter.ValDecoder) {
 	jsoniter.RegisterFieldDecoder(typ, field, decoder)
 }
