@@ -24,5 +24,12 @@ func NewDefaultConfig() *Config {
 		Level:  "debug",
 		Encode: "console",
 		Output: "console",
+		File: FileConfig{
+			Path:       "./logs/app.log",
+			Encode:     "json",
+			MaxSize:    100,
+			MaxBackups: 10,
+			MaxAge:     30,
+		},
 	}
 }

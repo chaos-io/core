@@ -4,132 +4,276 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"log"
-
-	"go.uber.org/zap"
+	"sync"
 )
 
-var defaultLog *zap.SugaredLogger = newDefaultLog()
-var defaultLevel zap.AtomicLevel
-
-func newDefaultLog() *zap.SugaredLogger {
-	return NewSugaredLogger(NewDefaultConfig())
+type Service struct {
+	logger     Logger
+	callerSkip int
 }
 
-// Logger add a new caller, so -1 default
-func Logger() *zap.SugaredLogger {
-	return defaultLog.WithOptions(zap.AddCallerSkip(-1))
+func NewService(logger Logger) *Service {
+	return NewServiceWithCallerSkip(logger, 0)
 }
 
-func logger() *zap.SugaredLogger {
-	return defaultLog
-}
-
-func With(args ...interface{}) *zap.SugaredLogger {
-	return defaultLog.With(args...)
-}
-
-func GetLevel() string {
-	return defaultLevel.String()
-}
-
-func SetLevel(level string) {
-	if err := defaultLevel.UnmarshalText([]byte(level)); err != nil {
-		log.Printf("failed to parse sugar level: %s\n", err)
+func NewServiceWithCallerSkip(logger Logger, callerSkip int) *Service {
+	if logger == nil {
+		logger = newNopLogger()
 	}
+	return &Service{logger: logger, callerSkip: callerSkip}
 }
 
-// Debug logs a message at DebugLevel. The message includes any fields passed
-// at the log site, as well as any fields accumulated on the logger.
-func Debug(args ...interface{}) {
-	logger().Debug(args...)
+func newDefaultService() *Service {
+	return NewServiceWithCallerSkip(NewLoggerWith(NewDefaultConfig()), 1)
 }
 
-// Info logs a message at InfoLevel.
-func Info(args ...interface{}) {
-	logger().Info(args...)
+var (
+	defaultServiceMu sync.RWMutex
+	defaultService   = newDefaultService()
+)
+
+func DefaultLogger() Logger {
+	defaultServiceMu.RLock()
+	defer defaultServiceMu.RUnlock()
+	return defaultService.logger
 }
 
-// Warn logs a message at WarnLevel.
-func Warn(args ...interface{}) {
-	logger().Warn(args...)
+func SetLogger(logger Logger) {
+	defaultServiceMu.Lock()
+	defaultService = NewServiceWithCallerSkip(logger, 1)
+	defaultServiceMu.Unlock()
 }
 
-// Error logs a message at ErrorLevel.
-func Error(args ...interface{}) {
-	logger().Error(args...)
+func SetLogLevel(level Level) {
+	defaultServiceMu.RLock()
+	svc := defaultService
+	defaultServiceMu.RUnlock()
+	svc.SetLogLevel(level)
 }
 
-// Fatal uses fmt.Sprint to construct and log a message, then calls os.Exit.
-func Fatal(args ...interface{}) {
-	logger().Fatal(args...)
+func (s *Service) Logger() Logger {
+	if s == nil {
+		return newNopLogger()
+	}
+	return s.logger
 }
 
-// Debugf uses fmt.Sprintf to log a templated message.
-func Debugf(template string, args ...interface{}) {
-	logger().Debugf(template, args...)
+func (s *Service) SetLogger(logger Logger) {
+	if s == nil {
+		return
+	}
+	if logger == nil {
+		logger = newNopLogger()
+	}
+	s.logger = logger
 }
 
-// Infof uses fmt.Sprintf to log a templated message.
-func Infof(template string, args ...interface{}) {
-	logger().Infof(template, args...)
+func (s *Service) SetLogLevel(level Level) {
+	if s == nil || s.logger == nil {
+		return
+	}
+	s.logger.SetLevel(level)
 }
 
-// Warnf uses fmt.Sprintf to log a templated message.
-func Warnf(template string, args ...interface{}) {
-	logger().Warnf(template, args...)
+func (s *Service) log(level Level, msg string, fields ...Field) {
+	if s == nil || s.logger == nil {
+		return
+	}
+	s.logger.Log(Entry{
+		Level:      level,
+		Message:    msg,
+		Fields:     fields,
+		CallerSkip: 1 + s.callerSkip + 2,
+	})
 }
 
-// Errorf uses fmt.Sprintf to log a templated message.
-func Errorf(template string, args ...interface{}) {
-	logger().Errorf(template, args...)
+func (s *Service) Debug(args ...interface{}) {
+	s.log(DebugLevel, fmt.Sprint(args...))
 }
 
-func Fatalf(template string, args ...interface{}) {
-	logger().Fatalf(template, args...)
+func (s *Service) Info(args ...interface{}) {
+	s.log(InfoLevel, fmt.Sprint(args...))
 }
 
-func Debugw(msg string, keysAndValues ...interface{}) {
-	logger().Debugw(msg, keysAndValues...)
+func (s *Service) Warn(args ...interface{}) {
+	s.log(WarnLevel, fmt.Sprint(args...))
 }
 
-func Infow(msg string, keysAndValues ...interface{}) {
-	logger().Infow(msg, keysAndValues...)
+func (s *Service) Error(args ...interface{}) {
+	s.log(ErrorLevel, fmt.Sprint(args...))
 }
 
-func Warnw(msg string, keysAndValues ...interface{}) {
-	logger().Warnw(msg, keysAndValues...)
+func (s *Service) Fatal(args ...interface{}) {
+	s.log(FatalLevel, fmt.Sprint(args...))
 }
 
-func Errorw(msg string, keysAndValues ...interface{}) {
-	logger().Errorw(msg, keysAndValues...)
+func (s *Service) Debugf(template string, args ...interface{}) {
+	s.log(DebugLevel, fmt.Sprintf(template, args...))
 }
 
-func Fatalw(msg string, keysAndValues ...interface{}) {
-	logger().Fatalw(msg, keysAndValues...)
+func (s *Service) Infof(template string, args ...interface{}) {
+	s.log(InfoLevel, fmt.Sprintf(template, args...))
 }
 
-func NewError(args ...interface{}) error {
-	logger().Error(args...)
-	return errors.New(fmt.Sprint(args...))
+func (s *Service) Warnf(template string, args ...interface{}) {
+	s.log(WarnLevel, fmt.Sprintf(template, args...))
 }
 
-func NewErrorf(template string, args ...interface{}) error {
-	logger().Errorf(template, args...)
+func (s *Service) Errorf(template string, args ...interface{}) {
+	s.log(ErrorLevel, fmt.Sprintf(template, args...))
+}
+
+func (s *Service) Fatalf(template string, args ...interface{}) {
+	s.log(FatalLevel, fmt.Sprintf(template, args...))
+}
+
+func (s *Service) Debugw(msg string, keysAndValues ...interface{}) {
+	s.log(DebugLevel, msg, keyValuesToFields(keysAndValues...)...)
+}
+
+func (s *Service) Infow(msg string, keysAndValues ...interface{}) {
+	s.log(InfoLevel, msg, keyValuesToFields(keysAndValues...)...)
+}
+
+func (s *Service) Warnw(msg string, keysAndValues ...interface{}) {
+	s.log(WarnLevel, msg, keyValuesToFields(keysAndValues...)...)
+}
+
+func (s *Service) Errorw(msg string, keysAndValues ...interface{}) {
+	s.log(ErrorLevel, msg, keyValuesToFields(keysAndValues...)...)
+}
+
+func (s *Service) Fatalw(msg string, keysAndValues ...interface{}) {
+	s.log(FatalLevel, msg, keyValuesToFields(keysAndValues...)...)
+}
+
+func (s *Service) NewError(args ...interface{}) error {
+	msg := fmt.Sprint(args...)
+	s.Error(msg)
+	return errors.New(msg)
+}
+
+func (s *Service) NewErrorf(template string, args ...interface{}) error {
+	msg := fmt.Sprintf(template, args...)
+	s.Error(msg)
 	return fmt.Errorf(template, args...)
 }
 
-func NewErrorw(msg string, keysAndValues ...interface{}) error {
-	logger().Errorw(msg, keysAndValues...)
+func (s *Service) NewErrorw(msg string, keysAndValues ...interface{}) error {
+	fields := keyValuesToFields(keysAndValues...)
+	s.Errorw(msg, keysAndValues...)
+	return errors.New(renderErrorMessage(msg, fields))
+}
 
-	buffer := bytes.NewBufferString(msg)
-	buffer.WriteString(" ")
-	for i := 0; i < len(keysAndValues)-1; i += 2 {
-		if i > 0 {
-			buffer.WriteString(", ")
-		}
-		buffer.WriteString(fmt.Sprintf("%v: %v", keysAndValues[i], keysAndValues[i+1]))
+func Debug(args ...interface{}) {
+	defaultService.Debug(args...)
+}
+
+func Info(args ...interface{}) {
+	defaultService.Info(args...)
+}
+
+func Warn(args ...interface{}) {
+	defaultService.Warn(args...)
+}
+
+func Error(args ...interface{}) {
+	defaultService.Error(args...)
+}
+
+func Fatal(args ...interface{}) {
+	defaultService.Fatal(args...)
+}
+
+func Debugf(template string, args ...interface{}) {
+	defaultService.Debugf(template, args...)
+}
+
+func Infof(template string, args ...interface{}) {
+	defaultService.Infof(template, args...)
+}
+
+func Warnf(template string, args ...interface{}) {
+	defaultService.Warnf(template, args...)
+}
+
+func Errorf(template string, args ...interface{}) {
+	defaultService.Errorf(template, args...)
+}
+
+func Fatalf(template string, args ...interface{}) {
+	defaultService.Fatalf(template, args...)
+}
+
+func Debugw(msg string, keysAndValues ...interface{}) {
+	defaultService.Debugw(msg, keysAndValues...)
+}
+
+func Infow(msg string, keysAndValues ...interface{}) {
+	defaultService.Infow(msg, keysAndValues...)
+}
+
+func Warnw(msg string, keysAndValues ...interface{}) {
+	defaultService.Warnw(msg, keysAndValues...)
+}
+
+func Errorw(msg string, keysAndValues ...interface{}) {
+	defaultService.Errorw(msg, keysAndValues...)
+}
+
+func Fatalw(msg string, keysAndValues ...interface{}) {
+	defaultService.Fatalw(msg, keysAndValues...)
+}
+
+func NewError(args ...interface{}) error {
+	return defaultService.NewError(args...)
+}
+
+func NewErrorf(template string, args ...interface{}) error {
+	return defaultService.NewErrorf(template, args...)
+}
+
+func NewErrorw(msg string, keysAndValues ...interface{}) error {
+	return defaultService.NewErrorw(msg, keysAndValues...)
+}
+
+func keyValuesToFields(keysAndValues ...interface{}) []Field {
+	if len(keysAndValues) < 2 {
+		return nil
 	}
 
-	return errors.New(buffer.String())
+	fields := make([]Field, 0, len(keysAndValues)/2)
+	for i := 0; i+1 < len(keysAndValues); i += 2 {
+		fields = append(fields, Field{
+			Key:   fmt.Sprint(keysAndValues[i]),
+			Value: keysAndValues[i+1],
+		})
+	}
+	return fields
 }
+
+func renderErrorMessage(msg string, fields []Field) string {
+	if len(fields) == 0 {
+		return msg
+	}
+
+	var b bytes.Buffer
+	b.WriteString(msg)
+	b.WriteByte(' ')
+	for i, field := range fields {
+		if i > 0 {
+			b.WriteString(", ")
+		}
+		b.WriteString(fmt.Sprintf("%v: %v", field.Key, field.Value))
+	}
+	return b.String()
+}
+
+type nopLogger struct{}
+
+func newNopLogger() Logger { return nopLogger{} }
+
+func (nopLogger) SetLevel(Level)       {}
+func (nopLogger) GetLevel() Level      { return InfoLevel }
+func (nopLogger) With(...Field) Logger { return nopLogger{} }
+func (nopLogger) Log(Entry)            {}
