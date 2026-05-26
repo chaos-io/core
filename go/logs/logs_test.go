@@ -17,6 +17,11 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
+func TestNewErrorf(t *testing.T) {
+	err := NewErrorf("this is %s", "NewErrorf")
+	require.Error(t, err)
+}
+
 func TestLoggerLevelAndFields(t *testing.T) {
 	buf := &bytes.Buffer{}
 	svc := NewService(newZapLogger(&Config{

@@ -149,19 +149,19 @@ func (s *Service) Fatalw(msg string, keysAndValues ...interface{}) {
 
 func (s *Service) NewError(args ...interface{}) error {
 	msg := fmt.Sprint(args...)
-	s.Error(msg)
+	s.log(ErrorLevel, msg)
 	return errors.New(msg)
 }
 
 func (s *Service) NewErrorf(template string, args ...interface{}) error {
 	msg := fmt.Sprintf(template, args...)
-	s.Error(msg)
+	s.log(ErrorLevel, msg)
 	return fmt.Errorf(template, args...)
 }
 
 func (s *Service) NewErrorw(msg string, keysAndValues ...interface{}) error {
 	fields := keyValuesToFields(keysAndValues...)
-	s.Errorw(msg, keysAndValues...)
+	s.log(ErrorLevel, msg, fields...)
 	return errors.New(renderErrorMessage(msg, fields))
 }
 
