@@ -3,6 +3,7 @@ package core
 import (
 	"errors"
 	"fmt"
+	"net/http"
 )
 
 func NewError(code *ErrorCode, message string) *Error {
@@ -54,19 +55,22 @@ func (e *Error) Error() string {
 		return ""
 	}
 	if len(e.Message) == 0 {
+		if e.Code == nil {
+			return ""
+		}
 		return e.Code.Name
 	}
 	return e.Message
 }
 
 func (e *Error) StatusCode() int {
-	if e == nil {
-		return 200
+	if e == nil || e.Code == nil {
+		return http.StatusInternalServerError
 	}
-	if e.Code.HttpStatusCode > 0 {
+	if e.Code.HttpStatusCode >= http.StatusContinue && e.Code.HttpStatusCode <= 599 {
 		return int(e.Code.HttpStatusCode)
 	}
-	return int(e.Code.Code)
+	return http.StatusInternalServerError
 }
 
 func (e *Error) AddDetail(detail any) *Error {
