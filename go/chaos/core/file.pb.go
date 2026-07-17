@@ -72,7 +72,7 @@ type File struct {
 	unknownFields protoimpl.UnknownFields
 
 	Name  string     `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	IsDir bool       `protobuf:"varint,2,opt,name=is_dir,json=isDir,proto3" json:"is_dir,omitempty"`
+	IsDir bool       `protobuf:"varint,2,opt,name=is_dir,json=isDir,proto3" json:"isDir,omitempty"`
 	Mode  File_Mode  `protobuf:"varint,5,opt,name=mode,proto3,enum=chaos.core.File_Mode" json:"mode,omitempty"`
 	Info  *File_Info `protobuf:"bytes,6,opt,name=info,proto3" json:"info,omitempty"`
 	Files []*File    `protobuf:"bytes,10,rep,name=files,proto3" json:"files,omitempty"`
@@ -153,8 +153,8 @@ type File_Info struct {
 	Name       string     `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Suffix     string     `protobuf:"bytes,2,opt,name=suffix,proto3" json:"suffix,omitempty"`
 	Size       int64      `protobuf:"varint,3,opt,name=size,proto3" json:"size,omitempty"`
-	ChangeTime *Timestamp `protobuf:"bytes,10,opt,name=change_time,json=changeTime,proto3" json:"change_time,omitempty"`
-	ModifyTime *Timestamp `protobuf:"bytes,11,opt,name=modify_time,json=modifyTime,proto3" json:"modify_time,omitempty"`
+	ChangeTime *Timestamp `protobuf:"bytes,10,opt,name=change_time,json=changeTime,proto3" json:"changeTime,omitempty"`
+	ModifyTime *Timestamp `protobuf:"bytes,11,opt,name=modify_time,json=modifyTime,proto3" json:"modifyTime,omitempty"`
 }
 
 func (x *File_Info) Reset() {

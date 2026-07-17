@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package fino2;
+
+import "google/protobuf/descriptor.proto";
+
+option go_package = "github.com/chaos-io/core/go/fino2;fino2";
+
+message ModelOptions {
+  bool generate = 1;
+  repeated string services = 2;
+}
+
+message DBOptions {
+  bool null = 1;
+  int64 len = 10;
+  string default = 20;
+  string comment = 21;
+  string index = 30;
+  string unique_index = 31;
+}
+
+message ValidateOptions {
+  bool required = 1;
+  bool omitempty = 2;
+
+  int64 len = 10;
+  int64 min = 11;
+  int64 max = 12;
+
+  string oneof = 20;
+
+  bool email = 30;
+  bool url = 31;
+  bool uuid = 32;
+}
+
+extend google.protobuf.MessageOptions {
+  ModelOptions model = 51001;
+}
+
+extend google.protobuf.FieldOptions {
+  DBOptions db = 51002;
+  ValidateOptions validate = 51003;
+}

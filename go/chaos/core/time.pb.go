@@ -419,7 +419,7 @@ type DateTime struct {
 	Minute      int32     `protobuf:"varint,5,opt,name=minute,proto3" json:"minute,omitempty"`
 	Seconds     int32     `protobuf:"varint,6,opt,name=seconds,proto3" json:"seconds,omitempty"`
 	Nanoseconds int32     `protobuf:"varint,7,opt,name=nanoseconds,proto3" json:"nanoseconds,omitempty"`
-	TimeZone    *TimeZone `protobuf:"bytes,10,opt,name=time_zone,json=timeZone,proto3" json:"time_zone,omitempty"`
+	TimeZone    *TimeZone `protobuf:"bytes,10,opt,name=time_zone,json=timeZone,proto3" json:"timeZone,omitempty"`
 }
 
 func (x *DateTime) Reset() {

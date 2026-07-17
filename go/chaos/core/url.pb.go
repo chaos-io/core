@@ -104,7 +104,7 @@ type Url_Authority struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	UserInfo string `protobuf:"bytes,1,opt,name=user_info,json=userInfo,proto3" json:"user_info,omitempty"`
+	UserInfo string `protobuf:"bytes,1,opt,name=user_info,json=userInfo,proto3" json:"userInfo,omitempty"`
 	Host     string `protobuf:"bytes,2,opt,name=host,proto3" json:"host,omitempty"`
 	Port     string `protobuf:"bytes,3,opt,name=port,proto3" json:"port,omitempty"`
 }

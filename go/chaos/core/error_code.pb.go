@@ -36,7 +36,7 @@ type ErrorCode struct {
 	Description string `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
 	// the api document url for the error code
 	Document       *Url  `protobuf:"bytes,6,opt,name=document,proto3" json:"document,omitempty"`
-	HttpStatusCode int32 `protobuf:"varint,8,opt,name=http_status_code,json=httpStatusCode,proto3" json:"http_status_code,omitempty"`
+	HttpStatusCode int32 `protobuf:"varint,8,opt,name=http_status_code,json=httpStatusCode,proto3" json:"httpStatusCode,omitempty"`
 }
 
 func (x *ErrorCode) Reset() {
