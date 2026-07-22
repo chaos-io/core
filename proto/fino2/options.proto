@@ -23,6 +23,7 @@ message DBOptions {
 message ValidateOptions {
   bool required = 1;
   bool omitempty = 2;
+  bool dive = 3;
 
   int64 len = 10;
   int64 min = 11;
