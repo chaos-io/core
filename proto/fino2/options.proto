@@ -36,6 +36,10 @@ message ValidateOptions {
   bool uuid = 32;
 }
 
+message MessagingOptions {
+  bool subscription = 1;
+}
+
 extend google.protobuf.MessageOptions {
   ModelOptions model = 51001;
 }
@@ -43,4 +47,8 @@ extend google.protobuf.MessageOptions {
 extend google.protobuf.FieldOptions {
   DBOptions db = 51002;
   ValidateOptions validate = 51003;
+}
+
+extend google.protobuf.MethodOptions {
+  MessagingOptions messaging = 51004;
 }
